@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amethyst Institute of Fashion Design</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header>
+        <div class="logo">
+            <!-- Logo image placeholder -->
+            <img src="resources/LOGO/logo icon.png" alt="AIFD Logo" class="logo-image">
+            <div class="logo-text">
+                <h1>AMETHYST</h1>
+                <p>INSTITUTE OF FASHION DESIGN</p>
+            </div>
+        </div>
+        <nav>
+            <ul class="desktop-menu">
+                <li><a href="#">Why AIFD</a></li>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">Results</a></li>
+                <li><a href="#">Brochure</a></li>
+                <li><a href="#">People</a></li>
+                <li><a href="#">Admission</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+        <div class="search">
+            <i class="fas fa-search"></i>
+        </div>
+    </header>
+
+    <!-- Mobile Menu (hidden by default) -->
+    <div class="mobile-menu">
+        <ul>
+            <li><a href="#">Why AIFD</a></li>
+            <li><a href="#">Courses</a></li>
+            <li><a href="#">Results</a></li>
+            <li><a href="#">Brochure</a></li>
+            <li><a href="#">People</a></li>
+            <li><a href="#">Admission</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section with Slideshow -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>JOIN<br>FREE DEMO<br>CLASSES</h2>
+            <p class="cursive">Don't miss it</p>
+            <p>Keep an eye out for the latest updates</p>
+            <button class="cta-button">Book Your Seat</button>
+        </div>
+        <div class="hero-image">
+            <video id="heroVideo" autoplay muted loop playsinline>
+                <source src="resources/AIFD Course Promo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button id="muteToggle" class="mute-button"><i class="fas fa-volume-mute"></i></button>
+        </div>
+    </section>
+
+    <!-- Fast-track Designer CTA -->
+    <section class="fast-track">
+        <div class="fast-track-content">
+            <h2>BE A DESIGNER IN 10 WEEKS</h2>
+            <p>Take the first step toward fulfilling your dream of becoming a fashion designer</p>
+        </div>
+        <div class="fast-track-form">
+            <input type="email" placeholder="Email">
+            <button>Sign Up</button>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses">
+        <div class="section-header">
+            <h2 class="section-title">Our Courses</h2>
+            <p class="explore-more">Explore Now</p>
+        </div>
+        
+        <div class="course-container">
+            <button class="nav-arrow left"><i class="fas fa-chevron-left"></i></button>
+            
+            <div class="course-cards">
+                <div class="course-card">
+                    <img src="resources/Background/Background.png" alt="Fashion Design Course">
+                    <h3>FASHION DESIGN COURSE</h3>
+                    <p>Beginner Level</p>
+                    <p>12 MONTHS</p>
+                    <button class="apply-button">APPLY NOW</button>
+                </div>
+                <div class="course-card">
+                    <img src="resources/Background/Background.png" alt="Fashion Design Course">
+                    <h3>FASHION DESIGN COURSE</h3>
+                    <p>Intermediate Level</p>
+                    <p>12 MONTHS</p>
+                    <button class="apply-button">APPLY NOW</button>
+                </div>
+                <div class="course-card">
+                    <img src="resources/Background/Background.png" alt="Pattern Course">
+                    <h3>PATTERN COURSE</h3>
+                    <p>Beginner Level</p>
+                    <p>6 MONTHS</p>
+                    <button class="apply-button">APPLY NOW</button>
+                </div>
+            </div>
+            
+            <button class="nav-arrow right"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Instructors Section -->
+    <section class="instructors">
+        <div class="section-header">
+            <h2 class="section-title">THE PILLAR OF AIFD</h2>
+            <p>Learn from the best and be groomed for success</p>
+        </div>
+        
+        <div class="instructor-container">
+            <button class="nav-arrow left"><i class="fas fa-chevron-left"></i></button>
+            
+            <div class="instructor-cards">
+                <!-- Instructor cards will be populated dynamically via JavaScript -->
+            </div>
+            
+            <button class="nav-arrow right"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-choose">
+        <div class="why-choose-container">
+            <div class="section-header">
+                <h2 class="section-title">WHY AIFD?</h2>
+                <p>Learn wherever you like, whenever you go</p>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="icon"><i class="fas fa-graduation-cap"></i></div>
+                    <p>Learn from Experts</p>
+                </div>
+                <!-- Other features -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Testimonials -->
+    <section class="testimonials">
+        <div class="section-header">
+            <h2 class="section-title">OUR STUDENT'S WORDS</h2>
+        </div>
+        
+        
+        <div class="testimonial-container">
+            <button class="nav-arrow left"><i class="fas fa-chevron-left"></i></button>
+            
+            <div class="testimonial-cards">
+                <div class="testimonial-card">
+                    <img src="resources/student1.jpg" alt="Student">
+                    <h3>Fashion Design Course - Beginner Level</h3>
+                    <div class="stars">★★★★★</div>
+                    <p>Olivia just completed our training 7 days ago. I learnt a lot of things about fashion design and I can't wait for more such as classes</p>
+                </div>
+                <div class="testimonial-card">
+                    <img src="resources/student2.jpg" alt="Student">
+                    <h3>Fashion Design Course - Beginner Level</h3>
+                    <div class="stars">★★★★★</div>
+                    <p>Olivia just completed our training 7 days ago. I learnt a lot of things about fashion design and I can't wait for more such as classes</p>
+                </div>
+                <div class="testimonial-card">
+                    <img src="resources/student3.jpg" alt="Student">
+                    <h3>Fashion Design Course - Beginner Level</h3>
+                    <div class="stars">★★★★★</div>
+                    <p>Olivia just completed our training 7 days ago. I learnt a lot of things about fashion design and I can't wait for more such as classes</p>
+                </div>
+            </div>
+            
+            <button class="nav-arrow right"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Fashion Stationary -->
+    <section class="fashion-stationary">
+        <div class="section-header">
+            <h2 class="section-title">Fashion Stationary</h2>
+            <p class="explore-more">Explore more</p>
+        </div>
+        
+        <div class="stationary-items">
+            <div class="stationary-item">
+                <img src="resources/Background/Background.png" alt="Sewing Kit">
+                <h3>Sewing Kit</h3>
+                <button>BUY NOW</button>
+            </div>
+            <div class="stationary-item">
+                <img src="resources/Background/Background.png" alt="Design Kit">
+                <h3>Design Kit</h3>
+                <button>BUY NOW</button>
+            </div>
+            <div class="stationary-item">
+                <img src="resources/Background/Background.png" alt="Ready Made Pattern">
+                <h3>Ready Made Pattern</h3>
+                <button>BUY NOW</button>
+            </div>
+            <div class="stationary-item">
+                <img src="resources/Background/Background.png" alt="Draping Procedure">
+                <h3>Draping Procedure</h3>
+                <button>BUY NOW</button>
+            </div>
+            <div class="stationary-item">
+                <img src="resources/Background/Background.png" alt="Sewing Kit">
+                <h3>Sewing Kit</h3>
+                <button>BUY NOW</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Work Gallery -->
+    <section class="student-work">
+        <div class="section-header">
+            <h2 class="section-title">Our Student's Work</h2>
+            <p>Explore more</p>
+        </div>
+        
+        <div class="gallery">
+            <div class="gallery-item"><img src="resources/Background/Background.png" alt="Student work"></div>
+            <div class="gallery-item"><img src="resources/Background/Background.png" alt="Student work"></div>
+            <div class="gallery-item"><img src="resources/Background/Background.png" alt="Student work"></div>
+            <div class="gallery-item"><img src="resources/Background/Background.png" alt="Student work"></div>
+            <div class="gallery-item"><img src="resources/Background/Background.png" alt="Student work"></div>
+        </div>
+    </section>
+    
+    <!-- Join Our Team -->
+    <section class="join-team">
+        <div class="join-content">
+            <h2>We are hiring at AIFD</h2>
+            <h3>JOIN OUR TEAM</h3>
+            <p>An ideal opportunity for those who love fashion design and want to team up with us</p>
+            <div class="join-buttons">
+                <button>Contact Us</button>
+                <button>Apply Now</button>
+            </div>
+        </div>
+        <div class="join-image">
+            <img src="resources/Background/Background.png" alt="Fashion designer working">
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>AMETHYST</h2>
+                <p>INSTITUTE OF FASHION DESIGN</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Courses</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p>Email: info@amethystfashion.com</p>
+                <p>Phone: +1 234 567 890</p>
+            </div>
+            <div class="footer-social">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Amethyst Institute of Fashion Design. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
