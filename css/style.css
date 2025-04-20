@@ -536,53 +536,104 @@ nav {
 }
 
 /* Join Team Section */
-.join-team {
+.join-team-container {
     padding: 4rem 5%;
-    background-color: var(--background-light);
+    background-color: white;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 3rem;
+}
+
+.join-team {
+    background-color: var(--primary-light);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1000px;
+    display: flex;
+    position: relative;
+    height: 280px;
+}
+
+.join-image-container {
+    position: relative;
+    width: 50%;
+}
+
+.join-image {
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 125%;
+    z-index: 2;
+}
+
+.join-image img {
+    width: 95%;
+    height:98%;
+    object-fit: cover;
+    border: 4px solid rgb(0, 0, 0);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .join-content {
-    flex: 1;
+    padding: 2.5rem;
+    width: 50%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .join-content h2 {
-    color: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
 }
 
 .join-content h3 {
     font-size: 2rem;
-    color: var(--primary-color);
+    color: white;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.join-content p {
+    margin-bottom: 2rem;
+    line-height: 1.5;
+    font-size: 0.9rem;
 }
 
 .join-buttons {
     display: flex;
     gap: 1rem;
-    margin-top: 1.5rem;
 }
 
-.join-buttons button {
-    background-color: var(--primary-color);
+.join-buttons .contact-btn {
+    background-color: var(--primary-dark);
     color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
 }
 
-.join-buttons button:first-child {
+.join-buttons .apply-btn {
     background-color: white;
     color: var(--primary-color);
-    border: 1px solid var(--primary-color);
+    padding: 0.7rem 1.5rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
 }
 
-.join-image {
-    flex: 1;
+.join-buttons .apply-btn i {
+    font-size: 0.8rem;
 }
 
-.join-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
 
 /* Student Work Gallery */
 .student-work {
@@ -704,10 +755,6 @@ footer {
         width: 100%;
     }
     
-    .join-team {
-        flex-direction: column;
-    }
-    
     .footer-content > div {
         flex: 1 0 40%;
     }
@@ -755,15 +802,6 @@ footer {
         flex: 0 0 45%;
     }
     
-    .join-buttons {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .join-buttons button {
-        width: 100%;
-    }
-    
     .footer-content > div {
         flex: 1 0 100%;
     }
@@ -800,5 +838,44 @@ footer {
     
     .gallery-item {
         flex: 1 0 100%;
+    }
+}
+
+/* Responsive adjustments for join team section */
+@media (max-width: 992px) {
+    .join-team {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .join-image-container {
+        width: 100%;
+        height: 200px;
+        position: relative;
+    }
+    
+    .join-image {
+        position: absolute;
+        width: 80%;
+        height: 220px;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -30px);
+    }
+    
+    .join-content {
+        width: 100%;
+        padding: 2rem;
+        padding-top: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    .join-buttons {
+        flex-direction: column;
+    }
+    
+    .join-buttons button {
+        width: 100%;
     }
 }
