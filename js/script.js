@@ -90,6 +90,88 @@ document.addEventListener('DOMContentLoaded', function() {
             startX = null;
         });
     });
+
+    // Student data as provided
+    const students = [
+        { name: 'Faria Alam Biva', title: 'Private Job', image: 'resources/students/Faria Alam Biva(Private job).jpg' },
+        { name: 'Kazi Sirajus Salekin', title: 'Buying House', image: 'resources/students/Kazi Sirajus Salekin(Works at Buying house).jpg' },
+        { name: 'Saima Islam Saba', title: 'Student', image: 'resources/students/Saima Islam Saba(Class 8).jpg' }
+    ];
+
+    // Populate student cards
+    const studentCardsContainer = document.querySelector('.student-cards');
+
+    if (studentCardsContainer) {
+        studentCardsContainer.innerHTML = '';
+        
+        students.forEach(student => {
+            const card = document.createElement('div');
+            card.className = 'student-card';
+            
+            card.innerHTML = `
+                <img src="${student.image}" alt="${student.name}">
+                <h3>${student.name}</h3>
+                <p class="student-title">${student.title}</p>
+            `;
+            
+            studentCardsContainer.appendChild(card);
+        });
+        
+        // Center-align for desktop if few students
+        if (students.length <= 4 && window.innerWidth >= 992) {
+            studentCardsContainer.style.justifyContent = 'center';
+        }
+    }
+
+    // Navigation arrows for student section (unchanged)
+    const studentContainer = document.querySelector('.student-cards');
+    const studentLeftArrow = document.querySelector('.students .nav-arrow.left');
+    const studentRightArrow = document.querySelector('.students .nav-arrow.right');
+
+    if (studentLeftArrow && studentRightArrow && studentContainer) {
+        studentLeftArrow.addEventListener('click', () => {
+            studentContainer.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+        
+        studentRightArrow.addEventListener('click', () => {
+            studentContainer.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+    }
+
+    // Touch swiping for students section (unchanged)
+    if (studentContainer) {
+        let startX;
+        let scrollLeft;
+        
+        studentContainer.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].pageX - studentContainer.offsetLeft;
+            scrollLeft = studentContainer.scrollLeft;
+        }, { passive: true });
+        
+        studentContainer.addEventListener('touchmove', (e) => {
+            if (!startX) return;
+            const x = e.touches[0].pageX - studentContainer.offsetLeft;
+            const walk = (x - startX) * 2;
+            studentContainer.scrollLeft = scrollLeft - walk;
+        }, { passive: true });
+        
+        studentContainer.addEventListener('touchend', () => {
+            startX = null;
+        });
+    }
+
+    // Update layout on window resize
+    window.addEventListener('resize', () => {
+        if (studentCardsContainer) {
+            if (students.length <= 4 && window.innerWidth >= 992) {
+                studentCardsContainer.style.justifyContent = 'center';
+            } else if (window.innerWidth >= 992) {
+                studentCardsContainer.style.justifyContent = 'center';
+            } else {
+                studentCardsContainer.style.justifyContent = 'flex-start';
+            }
+        }
+    });
     
     // Sample instructor data - replace with actual data
     const instructors = [

@@ -398,6 +398,74 @@ nav {
     border: 3px solid var(--primary-color);
 }
 
+/* Students Section */
+.students {
+    padding: 4rem 5%;
+    background-color: var(--background-light);
+}
+
+.student-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the container */
+    max-width: 1200px; /* Limit max width */
+    margin: 0 auto; /* Center in page */
+}
+
+.student-cards {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 1.5rem 0;
+    flex: 1;
+    justify-content: center; /* Center the cards */
+}
+
+.student-cards::-webkit-scrollbar {
+    display: none;
+}
+
+.student-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 180px; /* Slightly wider */
+    max-width: 200px; /* Maximum width */
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.student-card:hover {
+    transform: translateY(-5px);
+}
+
+.student-card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1.2rem;
+    border: 3px solid var(--primary-color);
+}
+
+.student-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.student-card .student-title {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
 /* Why Choose Us Section */
 .why-choose {
     padding: 4rem 5%;
@@ -477,16 +545,18 @@ nav {
     border-radius: 8px;
     min-width: 300px;
     position: relative;
-    padding-top: 3rem;
+    padding-top: 3.5rem; /* Increased from 3rem */
+    margin-top: 45px;    /* Added to create space for the image */
 }
 
 .testimonial-card img {
-    width: 80px;
-    height: 80px;
+    width: 90px;  /* Increased from 80px */
+    height: 90px; /* Increased from 80px */
     border-radius: 50%;
     object-fit: cover;
+    object-position: center top; /* Focus on the top part of the image where the face is */
     position: absolute;
-    top: -40px;
+    top: -45px;   /* Increased from -30px to move it higher */
     left: 50%;
     transform: translateX(-50%);
     border: 3px solid white;
@@ -877,5 +947,41 @@ footer {
     
     .join-buttons button {
         width: 100%;
+    }
+}
+/* Handle various numbers of students */
+@media (min-width: 1200px) {
+    .student-cards {
+        justify-content: center;
+        flex-wrap: wrap; /* Allow wrapping for many students */
+    }
+    
+    .student-card {
+        flex: 0 0 auto; /* Don't grow or shrink */
+        margin-bottom: 1rem;
+    }
+}
+
+/* Responsive adjustments for students section */
+@media (max-width: 992px) {
+    .students .nav-arrow {
+        display: none;
+    }
+    
+    .student-cards {
+        scroll-snap-type: x mandatory;
+        justify-content: flex-start; /* Start alignment on mobile */
+        flex-wrap: nowrap; /* No wrapping on mobile */
+    }
+    
+    .student-card {
+        scroll-snap-align: center;
+        min-width: 160px;
+    }
+}
+
+@media (max-width: 576px) {
+    .student-card {
+        min-width: 140px;
     }
 }
