@@ -1,4 +1,98 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Video slideshow setup
+    const videoUrls = [
+        "https://i.imgur.com/uxLUS6h.mp4",
+        "https://i.imgur.com/uxLUS6h.mp4"
+    ];
+    
+    let currentVideoIndex = 0;
+    
+    // Video slideshow container and controls
+    const heroVideoContainer = document.querySelector('.hero-image');
+    const heroVideo = document.getElementById('heroVideo');
+    
+    // Add slideshow navigation arrows
+    if (heroVideoContainer) {
+        // Create the navigation controls
+        const videoNavLeft = document.createElement('button');
+        videoNavLeft.className = 'video-nav-arrow left';
+        videoNavLeft.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        
+        const videoNavRight = document.createElement('button');
+        videoNavRight.className = 'video-nav-arrow right';
+        videoNavRight.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        
+        // Add dot indicators for each video
+        const videoDots = document.createElement('div');
+        videoDots.className = 'video-dots';
+        
+        videoUrls.forEach((_, index) => {
+            const dot = document.createElement('span');
+            dot.className = 'video-dot';
+            if (index === 0) dot.classList.add('active');
+            
+            dot.addEventListener('click', () => {
+                changeVideo(index);
+            });
+            
+            videoDots.appendChild(dot);
+        });
+        
+        // Add the controls to the container
+        heroVideoContainer.appendChild(videoNavLeft);
+        heroVideoContainer.appendChild(videoNavRight);
+        heroVideoContainer.appendChild(videoDots);
+        
+        // Navigation arrow click handlers
+        videoNavLeft.addEventListener('click', () => {
+            changeVideo(currentVideoIndex - 1);
+        });
+        
+        videoNavRight.addEventListener('click', () => {
+            changeVideo(currentVideoIndex + 1);
+        });
+        
+        // Function to change video
+        function changeVideo(index) {
+            // Wrap around for index values outside range
+            if (index < 0) index = videoUrls.length - 1;
+            if (index >= videoUrls.length) index = 0;
+            
+            // Store previous mute state
+            const wasMuted = heroVideo.muted;
+            
+            // Set the new source
+            heroVideo.src = videoUrls[index];
+            heroVideo.load();
+            
+            // Play the video with the previous mute state
+            heroVideo.muted = wasMuted;
+            heroVideo.play().catch(error => {
+                console.error("Play error on video change:", error);
+                heroVideo.muted = true;
+                heroVideo.play();
+            });
+            
+            // Update dot indicators
+            const dots = document.querySelectorAll('.video-dot');
+            dots.forEach((dot, dotIndex) => {
+                if (dotIndex === index) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+            
+            // Update current index
+            currentVideoIndex = index;
+        }
+        
+        // Auto-advance to next video when current one ends
+        heroVideo.addEventListener('ended', () => {
+            changeVideo(currentVideoIndex + 1);
+        });
+    }
+    
     // Mobile menu toggle
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const mobileMenu = document.querySelector('.mobile-menu');
@@ -226,31 +320,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     window.addEventListener('resize', handleResize);
     
-    // Ensure video loads and plays properly
-    // Video handling
-    const heroVideo = document.getElementById('heroVideo');
+    // Mute toggle functionality
     const muteToggle = document.getElementById('muteToggle');
-
+    
     if (heroVideo && muteToggle) {
         // Start muted (required for autoplay)
         heroVideo.muted = true;
-        
-        // Check if video is loaded
-        heroVideo.addEventListener('loadeddata', function() {
-            console.log("Video loaded successfully");
-        });
-        
-        // Log any errors that occur
-        heroVideo.addEventListener('error', function(e) {
-            console.error("Video error:", heroVideo.error);
-        });
-        
-        // Handle play errors
-        heroVideo.play().catch(function(error) {
-            console.error("Play error:", error);
-            // Add fallback controls if autoplay fails
-            heroVideo.controls = true;
-        });
         
         // Mute toggle functionality
         muteToggle.addEventListener('click', function() {
