@@ -272,11 +272,11 @@ nav {
 }
 
 .video-nav-arrow.left {
-    left: 20px;
+    left: 10px;
 }
 
 .video-nav-arrow.right {
-    right: 20px;
+    right: 10px;
 }
 
 .video-dots {
@@ -343,7 +343,7 @@ nav {
 
 /* Courses Section */
 .courses {
-    padding: 4rem 5%;
+    padding: 3rem 5%;
 }
 
 .course-container {
@@ -409,7 +409,7 @@ nav {
 
 /* Instructors Section */
 .instructors {
-    padding: 4rem 5%;
+    padding: 2rem 5%;
     background-color: var(--background-light);
 }
 
@@ -451,7 +451,7 @@ nav {
 
 /* Students Section */
 .students {
-    padding: 4rem 5%;
+    padding: 2rem 5%;
     background-color: var(--background-light);
 }
 
@@ -519,7 +519,7 @@ nav {
 
 /* Why Choose Us Section */
 .why-choose {
-    padding: 4rem 5%;
+    padding: 2rem 5%;
     text-align: center;
     background-color: var(--background-light);
 }
@@ -566,7 +566,7 @@ nav {
 
 /* Testimonials Section */
 .testimonials {
-    padding: 4rem 5%;
+    padding: 2rem 5%;
     background-color: var(--background-light);
 }
 
@@ -620,7 +620,7 @@ nav {
 
 /* Fashion Stationary Section */
 .fashion-stationary {
-    padding: 4rem 5%;
+    padding: 2rem 5%;
 }
 
 .stationary-items {
@@ -658,7 +658,7 @@ nav {
 
 /* Join Team Section */
 .join-team-container {
-    padding: 4rem 5%;
+    padding: 3rem 8%;
     background-color: white;
     display: flex;
     justify-content: center;
@@ -758,7 +758,7 @@ nav {
 
 /* Student Work Gallery */
 .student-work {
-    padding: 4rem 5%;
+    padding: 2.5rem 5%;
 }
 
 .gallery {
@@ -789,7 +789,7 @@ nav {
 footer {
     background-color: #333;
     color: white;
-    padding: 4rem 5% 2rem;
+    padding: 2rem 5% 2rem;
 }
 
 .footer-content {
@@ -833,7 +833,7 @@ footer {
 
 .footer-bottom {
     text-align: center;
-    padding-top: 2rem;
+    padding-top: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
