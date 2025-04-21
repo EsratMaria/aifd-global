@@ -574,27 +574,27 @@ nav {
 
 .stationary-items {
     display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to next line */
+    justify-content: center; /* Center items in container */
     gap: 1.5rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
     padding: 1rem 0;
 }
 
-.stationary-items::-webkit-scrollbar {
-    display: none;
-}
-
 .stationary-item {
-    min-width: 200px;
+    flex: 0 0 auto; /* Don't grow or shrink */
+    width: calc(20% - 1.5rem); /* Approximately 5 items per row with gap considered */
+    min-width: 180px; /* Minimum width to maintain readability */
+    max-width: 250px; /* Maximum width to prevent overly large items */
     text-align: center;
+    margin-bottom: 2rem;
 }
 
 .stationary-item img {
-    width: 100%;
-    height: 150px;
+    width: 90%;
+    height: 200px;
     object-fit: cover;
     border-radius: 8px;
+    border: 2px solid rgb(0, 0, 0);
     margin-bottom: 1rem;
 }
 
