@@ -14,18 +14,19 @@ body {
 
 /* Header */
 header {
-    padding: 20px 0;
+    padding: 1.25rem 0;
     text-align: center;
     background-color: white;
+    position: relative;
 }
 
 .logo {
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
     text-align: center;
 }
 
 .logo img {
-    max-height: 80px; /* Adjust based on your logo's size */
+    max-height: 5rem;
     width: auto;
 }
 
@@ -33,22 +34,41 @@ nav ul {
     display: flex;
     justify-content: center;
     list-style: none;
-    gap: 40px;
+    gap: 2.5rem;
+    flex-wrap: wrap;
 }
 
 nav ul li a {
     text-decoration: none;
     color: black;
-    font-size: 14px;
+    font-size: 0.875rem;
     letter-spacing: 1px;
-    font-weight: bold;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    cursor: pointer;
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: black;
 }
 
 /* Hero Section */
 .hero {
     width: 100%;
     height: auto;
-    background-color: #FFD1DC; /* Light pink background matching the image */
+    background-color: #FFD1DC;
     position: relative;
 }
 
@@ -75,94 +95,101 @@ nav ul li a {
 }
 
 .collection-name {
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 0.3125rem;
     letter-spacing: 1px;
 }
 
 .collection-subtitle {
-    font-size: 16px;
+    font-size: 1rem;
     letter-spacing: 1px;
 }
 
 /* Brand Info Section */
 .brand-info {
-    padding: 60px 15%;
+    padding: 3.75rem 15%;
     text-align: center;
 }
 
 .brand-info h1 {
-    font-size: 38px;
-    margin-bottom: 30px;
+    font-size: 2.375rem;
+    margin-bottom: 1.875rem;
     letter-spacing: 2px;
     font-weight: bold;
 }
 
 .brand-description {
-    max-width: 800px;
-    margin: 0 auto 20px;
+    max-width: 50rem;
+    margin: 0 auto 1.25rem;
     line-height: 1.8;
-    font-size: 14px;
+    font-size: 0.875rem;
     letter-spacing: 0.5px;
 }
 
 .studio-location {
     font-style: italic;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #555;
 }
 
 /* CTA Section */
 .cta {
-    padding: 60px 0;
+    padding: 3.75rem 1.25rem;
     text-align: center;
     background-color: #000;
     color: white;
 }
 
 .cta-content {
-    max-width: 500px;
+    max-width: 31.25rem;
     margin: 0 auto;
 }
 
 .cta p {
-    margin-bottom: 25px;
-    font-size: 16px;
+    margin-bottom: 1.5625rem;
+    font-size: 1rem;
     line-height: 1.5;
 }
 
 .cta button {
-    padding: 12px 25px;
+    padding: 0.75rem 1.5625rem;
     background-color: transparent;
     color: white;
     border: 1px solid white;
-    font-size: 14px;
+    font-size: 0.875rem;
     cursor: pointer;
     letter-spacing: 1px;
+    transition: background-color 0.3s;
+}
+
+.cta button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Footer */
 footer {
-    padding: 40px 0;
+    padding: 2.5rem 1.25rem;
     background-color: white;
 }
 
 .footer-container {
     display: flex;
     justify-content: space-between;
-    max-width: 1200px;
+    max-width: 75rem;
     margin: 0 auto;
-    padding: 0 20px;
+    flex-wrap: wrap;
 }
 
 .footer-section {
     flex: 1;
+    min-width: 150px;
+    margin-bottom: 1.5rem;
 }
 
 .footer-section h3 {
-    font-size: 14px;
-    margin-bottom: 20px;
+    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
     font-weight: bold;
 }
 
@@ -171,11 +198,100 @@ footer {
 }
 
 .footer-section ul li {
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
 }
 
 .footer-section ul li a {
     text-decoration: none;
     color: #777;
-    font-size: 12px;
+    font-size: 0.75rem;
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (max-width: 1024px) {
+    .hero-text {
+        right: 5%;
+        bottom: 20%;
+    }
+    
+    .brand-info {
+        padding: 3.75rem 10%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    nav {
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.5s ease-out;
+        width: 100%;
+    }
+    
+    nav.active {
+        max-height: 300px;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        gap: 0.9375rem;
+        padding: 1.25rem 0;
+    }
+    
+    .hero-text {
+        right: 5%;
+        bottom: 15%;
+    }
+    
+    .collection-name {
+        font-size: 1.5rem;
+    }
+    
+    .collection-subtitle {
+        font-size: 0.875rem;
+    }
+    
+    .brand-info h1 {
+        font-size: 2rem;
+    }
+    
+    .footer-container {
+        justify-content: flex-start;
+    }
+    
+    .footer-section {
+        flex: 0 0 50%;
+        padding-right: 1.25rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .logo img {
+        max-height: 3.75rem;
+    }
+    
+    .hero-text {
+        right: 5%;
+        bottom: 10%;
+    }
+    
+    .collection-name {
+        font-size: 1.25rem;
+    }
+    
+    .brand-info {
+        padding: 2.5rem 1.25rem;
+    }
+    
+    .brand-info h1 {
+        font-size: 1.75rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .footer-section {
+        flex: 0 0 100%;
+    }
 }

@@ -1,20 +1,42 @@
-// JavaScript for slideshow functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // This will be used for the slideshow once your friend provides the images
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const nav = document.querySelector('nav');
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function() {
+            nav.classList.toggle('active');
+        });
+    }
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('nav') && !event.target.closest('.mobile-menu-toggle')) {
+            if (nav.classList.contains('active')) {
+                nav.classList.remove('active');
+            }
+        }
+    });
+    
+    // Slideshow functionality (placeholder)
     let slideIndex = 0;
     
-    // Function to handle slideshow once images are provided
     function showSlides() {
-        // Placeholder for future slideshow functionality
-        // Will implement once images are provided
+        // Will be implemented when images are provided
     }
     
     // CTA button event
     const ctaButton = document.querySelector('.cta button');
     if (ctaButton) {
         ctaButton.addEventListener('click', function() {
-            // This could open a form, modal, or redirect to a contact page
             alert("You'll be connected with our stylists soon.");
         });
     }
+    
+    // Resize handler for responsive adjustments
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768 && nav.classList.contains('active')) {
+            nav.classList.remove('active');
+        }
+    });
 });
