@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
     showSlide(0);
     
     // Auto advance slides every 5 seconds
-    let slideshowInterval = setInterval(nextSlide, 1500);
+    let slideshowInterval = setInterval(nextSlide, 3000);
     
     // Pause slideshow on hover
     const slideshowContainer = document.querySelector('.slideshow-container');
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         slideshowContainer.addEventListener('mouseleave', () => {
-            slideshowInterval = setInterval(nextSlide, 1500);
+            slideshowInterval = setInterval(nextSlide, 3000);
         });
     }
     
