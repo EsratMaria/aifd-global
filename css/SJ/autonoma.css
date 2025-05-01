@@ -1,0 +1,204 @@
+/* Autonoma Collection Page Styles */
+
+/* Collection hero section */
+.collection-hero {
+    position: relative;
+    width: 100%;
+    /* Removed fixed height to allow for proper image proportions */
+    background-color: #FFD1DC; /* Light pink background */
+    overflow: hidden;
+    aspect-ratio: 2.5 / 1; /* Match your image's aspect ratio of 2500x1000 */
+    max-height: 600px; /* Cap maximum height for very large screens */
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%; /* Adjust this value to prevent head cropping - moves focus point upward */
+}
+
+.collection-label {
+    position: absolute;
+    right: 10%;
+    bottom: 15%; /* Relative positioning instead of fixed pixels */
+    text-align: right;
+    color: white;
+    z-index: 5;
+}
+
+.collection-category {
+    font-size: 0.875rem;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.collection-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+.collection-subtitle {
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+/* Collection description */
+.collection-description {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.collection-description p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+/* Collection gallery */
+.collection-gallery {
+    max-width: 1200px;
+    margin: 0 auto 70px;
+    padding: 0 20px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.gallery-item {
+    position: relative;
+    /* Setting aspect ratio to match the reference image */
+    padding-bottom: 150%; /* Approximately 2:3 ratio (taller than wide) */
+    overflow: hidden;
+}
+
+.gallery-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Smooth transition for hover effects */
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Responsive design */
+@media screen and (max-width: 1200px) {
+    .collection-hero {
+        aspect-ratio: 2.2 / 1; /* Slightly taller on smaller desktop screens */
+    }
+    
+    .collection-label {
+        right: 5%;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .collection-hero {
+        aspect-ratio: 2 / 1;
+    }
+    
+    .gallery-grid {
+        gap: 15px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .collection-hero {
+        aspect-ratio: 1.8 / 1; /* Make hero taller on tablets to show more of the image */
+    }
+    
+    .collection-title {
+        font-size: 2rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .collection-description {
+        margin: 40px auto;
+    }
+    
+    .hero-image img {
+        object-position: center 20%; /* Further adjust focus point for tablets */
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .collection-hero {
+        aspect-ratio: 1.5 / 1; /* Even taller on small devices */
+    }
+    
+    .hero-image img {
+        object-position: center 15%; /* Adjust focus point for mobile */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .collection-hero {
+        aspect-ratio: 1.2 / 1; /* Much taller on mobile to show more content */
+    }
+    
+    .collection-label {
+        right: 20px;
+        bottom: 10%; /* Adjust position for mobile */
+    }
+    
+    .collection-category {
+        font-size: 0.75rem;
+    }
+    
+    .collection-title {
+        font-size: 1.5rem;
+    }
+    
+    .collection-subtitle {
+        font-size: 0.875rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .gallery-item {
+        padding-bottom: 140%; /* Slightly adjusted for mobile */
+    }
+    
+    .collection-description {
+        margin: 30px auto;
+    }
+    
+    .collection-description p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Additional adjustment for very small screens */
+@media screen and (max-width: 360px) {
+    .collection-hero {
+        aspect-ratio: 1 / 1; /* Square aspect ratio for very small screens */
+    }
+    
+    .hero-image img {
+        object-position: center 10%; /* Focus even higher on very small screens */
+    }
+}
