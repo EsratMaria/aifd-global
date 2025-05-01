@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Create dots for each slide
     if (slides.length > 0 && dotsContainer) {
+        dotsContainer.innerHTML = ''; // Clear any existing dots
         slides.forEach((_, index) => {
             const dot = document.createElement('span');
             dot.classList.add('dot');
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     showSlide(0);
     
     // Auto advance slides every 5 seconds
-    let slideshowInterval = setInterval(nextSlide, 3000);
+    let slideshowInterval = setInterval(nextSlide, 5000);
     
     // Pause slideshow on hover
     const slideshowContainer = document.querySelector('.slideshow-container');
@@ -87,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         slideshowContainer.addEventListener('mouseleave', () => {
-            slideshowInterval = setInterval(nextSlide, 3000);
+            slideshowInterval = setInterval(nextSlide, 5000);
         });
     }
     

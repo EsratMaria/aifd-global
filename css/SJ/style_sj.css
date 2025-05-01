@@ -126,22 +126,22 @@ nav ul li a.active {
     letter-spacing: 1px;
 }
 
-/* Slideshow Navigation */
+/* Updated Slideshow Navigation Dots */
 .slideshow-dots {
     position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 15px;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: center;
+    gap: 25px; /* Increased spacing between dots from 8px to 15px */
     z-index: 10;
 }
 
 .dot {
-    height: 10px;
-    width: 10px;
-    margin: 0 5px;
-    background-color: rgba(255, 255, 255, 0.5);
+    height: 8px;
+    width: 8px;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
     display: inline-block;
     cursor: pointer;
@@ -149,7 +149,7 @@ nav ul li a.active {
 }
 
 .dot.active {
-    background-color: white;
+    background-color: #e94e97; /* Pink/magenta color for active dot */
 }
 
 /* Fade animation */
@@ -356,9 +356,13 @@ footer {
         flex: 0 0 100%;
     }
     
+    /* Adjust dot size and spacing for mobile */
+    .slideshow-dots {
+        gap: 12px; /* Slightly reduced gap for mobile but still spacious */
+    }
+    
     .dot {
-        height: 8px;
-        width: 8px;
-        margin: 0 3px;
+        height: 6px;
+        width: 6px;
     }
 }
