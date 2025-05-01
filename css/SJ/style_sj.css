@@ -224,6 +224,123 @@ nav ul li a.active {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Submenu Base Styles */
+.main-menu {
+    position: relative;
+}
+
+.has-submenu {
+    position: static;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: white;
+    z-index: 100;
+    padding: 40px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.submenu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 90;
+}
+
+.has-submenu.active .submenu,
+.has-submenu.active .submenu-overlay {
+    display: block;
+}
+
+/* Collection Submenu Specific Styles */
+.collection-submenu {
+    padding: 30px 40px;
+}
+
+.submenu-header {
+    display: none; /* Hidden on desktop */
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.submenu-header h2 {
+    font-size: 18px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.back-btn, .close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.collection-category {
+    margin-bottom: 50px;
+}
+
+.collection-category h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.subcategories {
+    display: flex;
+    gap: 30px;
+}
+
+.subcategory {
+    flex: 1;
+}
+
+.subcategory h4 {
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-weight: normal;
+}
+
+/* Collection Sliders */
+.collection-slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.collection-slides {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.collection-slide {
+    min-width: 100%;
+    flex: 0 0 auto;
+}
+
+.collection-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Mobile specific styles */
+.mobile-only {
+    display: none;
+}
+
 /* Footer */
 footer {
     padding: 2.5rem 1.25rem;
@@ -276,6 +393,115 @@ footer {
     }
 }
 
+/* Hover functionality for desktop */
+@media (min-width: 769px) {
+    .has-submenu:hover .submenu {
+        display: block;
+    }
+}
+
+/* Active state for mobile */
+.has-submenu.active .submenu,
+.has-submenu.active .submenu-overlay {
+    display: block;
+}
+
+/* Collection Submenu Specific Styles */
+.collection-submenu {
+    padding: 30px 40px;
+}
+
+.submenu-header {
+    display: none; /* Hidden on desktop */
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.submenu-header h2 {
+    font-size: 18px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.back-btn, .close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Categories container to display categories side by side */
+.categories-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.collection-category {
+    flex: 1;
+    margin-bottom: 30px;
+}
+
+.collection-category h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.subcategories {
+    display: flex;
+    gap: 30px;
+}
+
+.subcategory {
+    flex: 1;
+}
+
+.subcategory h4 {
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-weight: normal;
+}
+
+/* Collection Sliders */
+.collection-slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.collection-slides {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.collection-slide {
+    min-width: 100%;
+    flex: 0 0 auto;
+    height: 0;
+    padding-bottom: 125%; /* Creates a rectangular aspect ratio */
+    position: relative;
+}
+
+.collection-slide img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Mobile specific styles */
+.mobile-only {
+    display: none;
+}
+
 @media screen and (max-width: 768px) {
     .mobile-menu-toggle {
         display: flex;
@@ -323,6 +549,50 @@ footer {
         flex: 0 0 50%;
         padding-right: 1.25rem;
     }
+    /* Mobile menu adjustments */
+    .submenu {
+        position: fixed;
+        top: 0;
+        height: 100%;
+        padding: 0 15px;
+        overflow-y: auto;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .has-submenu.active .submenu {
+        transform: translateX(0);
+    }
+    
+    .mobile-only {
+        display: flex;
+    }
+    
+    .submenu-content {
+        padding: 15px 0;
+    }
+
+    .categories-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .subcategories {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .collection-category {
+        margin-bottom: 30px;
+    }
+    
+    .collection-category h3 {
+        margin-bottom: 15px;
+    }
+
+    .collection-slide {
+        padding-bottom: 130%; /* Slightly taller on mobile */
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -364,5 +634,12 @@ footer {
     .dot {
         height: 6px;
         width: 6px;
+    }
+    .collection-category h3 {
+        font-size: 16px;
+    }
+    
+    .subcategory h4 {
+        font-size: 13px;
     }
 }
