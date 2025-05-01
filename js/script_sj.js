@@ -9,31 +9,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Collection dropdown functionality - Mobile only
+    // Collection dropdown functionality
     const collectionLink = document.querySelector('.collection-link');
     const collectionSubmenu = document.querySelector('.has-submenu');
     const submenuOverlay = document.querySelector('.submenu-overlay');
     const closeBtn = document.querySelector('.close-btn');
     const backBtn = document.querySelector('.back-btn');
     
-    // Mobile-only event handling for collection menu
-    if (window.innerWidth <= 768) {
-        if (collectionLink) {
-            collectionLink.addEventListener('click', function(e) {
+    // Collection link click handler - different for mobile and desktop
+    if (collectionLink) {
+        collectionLink.addEventListener('click', function(e) {
+            // Only prevent default and toggle submenu on mobile
+            if (window.innerWidth <= 768) {
                 e.preventDefault();
                 collectionSubmenu.classList.toggle('active');
-                document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-            });
-        }
-    }
-    
-    if (submenuOverlay) {
-        submenuOverlay.addEventListener('click', function() {
-            collectionSubmenu.classList.remove('active');
-            document.body.style.overflow = '';
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
         });
     }
     
+    // Close and back buttons for mobile
     if (closeBtn) {
         closeBtn.addEventListener('click', function() {
             collectionSubmenu.classList.remove('active');
@@ -48,26 +43,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Update event handling when window is resized
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768) {
-            // Desktop behavior
-            if (collectionLink) {
-                collectionLink.removeEventListener('click', function(e) {
-                    e.preventDefault();
-                    collectionSubmenu.classList.toggle('active');
-                });
-            }
-        } else {
-            // Mobile behavior
-            if (collectionLink) {
-                collectionLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    collectionSubmenu.classList.toggle('active');
-                });
-            }
-        }
-    });
+    // Close submenu when clicking overlay
+    if (submenuOverlay) {
+        submenuOverlay.addEventListener('click', function() {
+            collectionSubmenu.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
     
     // Collection sliders functionality
     const sliders = document.querySelectorAll('.collection-slider');
@@ -79,79 +61,66 @@ document.addEventListener('DOMContentLoaded', function() {
         if (slideElements.length <= 1) return; // Skip if only one slide
         
         let currentIndex = 0;
-        let startX;
         let touchStartX;
         let touchEndX;
         
-        // Clone first and last slides for infinite effect
-        const firstSlideClone = slideElements[0].cloneNode(true);
-        const lastSlideClone = slideElements[slideElements.length - 1].cloneNode(true);
-        
-        slides.appendChild(firstSlideClone);
-        slides.insertBefore(lastSlideClone, slideElements[0]);
-        
-        // Update slides after cloning
-        const allSlides = slider.querySelectorAll('.collection-slide');
-        
-        // Position slides at first real slide (index 1 after cloning)
-        slides.style.transform = `translateX(-100%)`;
-        
-        // Function to move to a specific slide
-        function goToSlide(index) {
-            currentIndex = index;
-            slides.style.transition = 'transform 0.5s ease';
-            slides.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
-        }
-        
-        // Function to handle transition end
-        function handleTransitionEnd() {
-            // If we transitioned to the clone of the first slide, jump to the real first slide
-            if (currentIndex === allSlides.length - 2) {
-                slides.style.transition = 'none';
-                currentIndex = 0;
+        // Clone first and last slides for infinite effect if multiple slides
+        if (slideElements.length > 1) {
+            const firstSlideClone = slideElements[0].cloneNode(true);
+            const lastSlideClone = slideElements[slideElements.length - 1].cloneNode(true);
+            
+            slides.appendChild(firstSlideClone);
+            slides.insertBefore(lastSlideClone, slideElements[0]);
+            
+            // Update slides after cloning
+            const allSlides = slider.querySelectorAll('.collection-slide');
+            
+            // Position slides at first real slide (index 1 after cloning)
+            slides.style.transform = `translateX(-100%)`;
+            
+            // Event listeners for touch
+            slider.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            slider.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                
+                if (touchEndX < touchStartX - 50) {
+                    goToSlide(currentIndex + 1);
+                }
+                
+                if (touchEndX > touchStartX + 50) {
+                    goToSlide(currentIndex - 1);
+                }
+            });
+            
+            // Function to move to a specific slide
+            function goToSlide(index) {
+                currentIndex = index;
+                slides.style.transition = 'transform 0.5s ease';
                 slides.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
             }
             
-            // If we transitioned to the clone of the last slide, jump to the real last slide
-            if (currentIndex === -1) {
-                slides.style.transition = 'none';
-                currentIndex = allSlides.length - 3;
-                slides.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
-            }
-        }
-        
-        // Event listeners for touch
-        slider.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-        
-        slider.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            
-            if (touchEndX < touchStartX - 50) {
-                goToSlide(currentIndex + 1);
+            // Function to handle transition end
+            function handleTransitionEnd() {
+                // If we transitioned to the clone of the first slide, jump to the real first slide
+                if (currentIndex === allSlides.length - 2) {
+                    slides.style.transition = 'none';
+                    currentIndex = 0;
+                    slides.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
+                }
+                
+                // If we transitioned to the clone of the last slide, jump to the real last slide
+                if (currentIndex === -1) {
+                    slides.style.transition = 'none';
+                    currentIndex = allSlides.length - 3;
+                    slides.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
+                }
             }
             
-            if (touchEndX > touchStartX + 50) {
-                goToSlide(currentIndex - 1);
-            }
-        });
-        
-        // Transition end event
-        slides.addEventListener('transitionend', handleTransitionEnd);
-        
-        // Auto slide every 5 seconds
-        setInterval(() => {
-            goToSlide(currentIndex + 1);
-        }, 5000);
-    });
-    
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('nav') && !event.target.closest('.mobile-menu-toggle')) {
-            if (nav.classList.contains('active')) {
-                nav.classList.remove('active');
-            }
+            // Transition end event
+            slides.addEventListener('transitionend', handleTransitionEnd);
         }
     });
     
@@ -229,22 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // CTA button event
-    const ctaButton = document.querySelector('.cta button');
-    if (ctaButton) {
-        ctaButton.addEventListener('click', function() {
-            alert("You'll be connected with our stylists soon.");
-        });
-    }
-    
-    // Resize handler for responsive adjustments
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768 && nav.classList.contains('active')) {
-            nav.classList.remove('active');
-        }
-    });
-    
-    // Swipe functionality for mobile devices on main slideshow
+    // Swipe functionality for main slideshow
     let mainTouchStartX = 0;
     let mainTouchEndX = 0;
     
@@ -269,4 +223,25 @@ document.addEventListener('DOMContentLoaded', function() {
             checkMainSwipeDirection();
         });
     }
+    
+    // CTA button event
+    const ctaButton = document.querySelector('.cta button');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', function() {
+            alert("You'll be connected with our stylists soon.");
+        });
+    }
+    
+    // Handle window resize - remove active class on desktop
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            if (collectionSubmenu.classList.contains('active')) {
+                collectionSubmenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            if (nav.classList.contains('active')) {
+                nav.classList.remove('active');
+            }
+        }
+    });
 });
