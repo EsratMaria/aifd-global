@@ -54,6 +54,9 @@
 
 .designer-story {
     line-height: 1.8;
+    text-align: center; /* Center align the text */
+    max-width: 700px; /* Constrain width for better readability */
+    margin: 0 auto; /* Center the container */
 }
 
 .designer-story p {
@@ -93,7 +96,15 @@
         font-size: 0.8rem;
     }
     
+    .designer-story {
+        line-height: 1.8;
+        text-align: center; /* Center align the text */
+        max-width: 700px; /* Constrain width for better readability */
+        margin: 0 auto; /* Center the container */
+    }
+    
     .designer-story p {
-        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+        font-size: 1rem;
     }
 }
