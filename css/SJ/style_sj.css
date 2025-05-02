@@ -439,11 +439,15 @@ footer {
     display: flex;
     justify-content: space-between;
     gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .collection-category {
     flex: 1;
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .collection-category h3 {
@@ -454,11 +458,15 @@ footer {
 
 .subcategories {
     display: flex;
-    gap: 30px;
+    flex-direction: column;
+    gap: 20px;
+    flex-grow: 1;
 }
 
 .subcategory {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .subcategory h4 {
@@ -467,34 +475,44 @@ footer {
     font-weight: normal;
 }
 
-/* Collection Sliders */
+/* Fixed Collection Sliders - Modified to show full image content */
 .collection-slider {
     width: 100%;
     overflow: hidden;
     position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .collection-slides {
     display: flex;
     transition: transform 0.5s ease;
+    flex-grow: 1;
 }
 
 .collection-slide {
     min-width: 100%;
     flex: 0 0 auto;
-    height: 0;
-    padding-bottom: 125%; /* Creates a rectangular aspect ratio */
-    position: relative;
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    height: 380px; /* Fixed height for desktop that fits the models */
+    overflow: hidden;
+}
+
+.collection-slide a {
+    display: block;
+    height: 100%;
+    width: 100%;
 }
 
 .collection-slide img {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center;
+    object-fit: contain; /* Show the entire image without cropping */
+    object-position: center; /* Center the image */
+    max-height: 100%;
 }
 
 /* Mobile specific styles */
@@ -620,7 +638,7 @@ footer {
     }
 
     .collection-slide {
-        padding-bottom: 75%; /* Adjusted for better mobile viewing */
+        height: 280px; /* Shorter on mobile but still enough to show full model */
     }
 }
 
@@ -664,11 +682,16 @@ footer {
         height: 6px;
         width: 6px;
     }
+    
     .collection-category h3 {
         font-size: 16px;
     }
     
     .subcategory h4 {
         font-size: 13px;
+    }
+    
+    .collection-slide {
+        height: 240px; /* Even shorter on small mobile */
     }
 }
