@@ -289,13 +289,27 @@ nav ul li a.active {
 }
 
 .collection-category {
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 
 .collection-category h3 {
     font-size: 18px;
     margin-bottom: 20px;
     font-weight: bold;
+}
+
+/* Categories container to display categories side by side */
+.categories-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.collection-category {
+    flex: 1;
+    margin-bottom: 30px;
 }
 
 .subcategories {
@@ -313,49 +327,40 @@ nav ul li a.active {
     font-weight: normal;
 }
 
-/* Categories container to display categories side by side */
-.categories-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-/* Collection Sliders - Fixed for desktop */
+/* FIXED Collection Sliders for all devices */
 .collection-slider {
     width: 100%;
-    overflow: hidden;
     position: relative;
+    margin-bottom: 20px;
 }
 
 .collection-slides {
-    display: flex;
-    transition: transform 0.5s ease;
+    width: 100%;
 }
 
 .collection-slide {
-    min-width: 100%;
-    flex: 0 0 auto;
+    width: 100%;
     position: relative;
+    padding-top: 133%; /* Creates a consistent aspect ratio (4:3) container */
 }
 
-/* Desktop-specific image handling */
-@media (min-width: 769px) {
-    .collection-slide {
-        height: 380px; /* Fixed height for desktop */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .collection-slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* Show full image on desktop */
-        object-position: center;
-        max-height: 100%;
-    }
+.collection-slide a {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.collection-slide img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensures entire image is visible */
+    background-color: transparent;
 }
 
 /* Mobile specific styles */
@@ -422,7 +427,6 @@ footer {
     }
 }
 
-/* Mobile styles */
 @media screen and (max-width: 768px) {
     .mobile-menu-toggle {
         display: flex;
@@ -528,10 +532,6 @@ footer {
         margin-bottom: 40px;
     }
     
-    .collection-category h3 {
-        margin-bottom: 15px;
-    }
-    
     .subcategories {
         display: block;
     }
@@ -541,21 +541,9 @@ footer {
         margin-bottom: 30px;
     }
     
-    /* Mobile image handling - reverted to original behavior */
+    /* Adjust collection slides for mobile */
     .collection-slide {
-        min-width: 100%;
-        position: relative;
-        padding-bottom: 125%; /* Creates a rectangular aspect ratio */
-    }
-    
-    .collection-slide img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center 25%; /* Adjust to show faces better */
+        padding-top: 120%; /* Slightly shorter aspect ratio for mobile */
     }
 }
 
