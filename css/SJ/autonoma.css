@@ -4,13 +4,14 @@
 .collection-hero {
     position: relative;
     width: 100%;
-    background-color: #FFD1DC; /* Light pink background */
     overflow: hidden;
+    /* Removed background-color to prevent extra colored space */
 }
 
 .hero-image {
     width: 100%;
     position: relative;
+    line-height: 0; /* Removes any inline spacing */
 }
 
 .hero-image img {
@@ -18,6 +19,7 @@
     height: auto;
     display: block;
     max-width: 100%;
+    vertical-align: bottom; /* Prevents bottom gap */
 }
 
 .collection-label {
@@ -98,30 +100,18 @@
 
 /* Responsive design */
 @media screen and (max-width: 1200px) {
-    .collection-hero {
-        aspect-ratio: 2.2 / 1; /* Slightly taller on smaller desktop screens */
-    }
-    
     .collection-label {
         right: 5%;
     }
 }
 
 @media screen and (max-width: 1024px) {
-    .collection-hero {
-        aspect-ratio: 2 / 1;
-    }
-    
     .gallery-grid {
         gap: 15px;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .collection-hero {
-        aspect-ratio: 1.8 / 1; /* Make hero taller on tablets to show more of the image */
-    }
-    
     .collection-title {
         font-size: 2rem;
     }
@@ -136,27 +126,9 @@
     .collection-description {
         margin: 40px auto;
     }
-    
-    .hero-image img {
-        object-position: center 20%; /* Further adjust focus point for tablets */
-    }
-}
-
-@media screen and (max-width: 580px) {
-    .collection-hero {
-        aspect-ratio: 1.5 / 1; /* Even taller on small devices */
-    }
-    
-    .hero-image img {
-        object-position: center 15%; /* Adjust focus point for mobile */
-    }
 }
 
 @media screen and (max-width: 480px) {
-    .collection-hero {
-        aspect-ratio: 1.2 / 1; /* Much taller on mobile to show more content */
-    }
-    
     .collection-label {
         right: 5%;
         bottom: 8%;
@@ -189,16 +161,5 @@
     
     .collection-description p {
         font-size: 0.9rem;
-    }
-}
-
-/* Additional adjustment for very small screens */
-@media screen and (max-width: 360px) {
-    .collection-hero {
-        aspect-ratio: 1 / 1; /* Square aspect ratio for very small screens */
-    }
-    
-    .hero-image img {
-        object-position: center 10%; /* Focus even higher on very small screens */
     }
 }

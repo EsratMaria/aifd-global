@@ -9,13 +9,14 @@
 .sustainable-hero {
     position: relative;
     width: 100%;
-    background-color: #222;
     overflow: hidden;
+    /* Removed background-color to prevent extra colored space */
 }
 
 .sustainable-hero .hero-image {
     width: 100%;
     position: relative;
+    line-height: 0; /* Removes any inline spacing */
 }
 
 .sustainable-hero .hero-image img {
@@ -23,6 +24,7 @@
     height: auto;
     display: block;
     max-width: 100%;
+    vertical-align: bottom; /* Prevents bottom gap */
     filter: grayscale(100%); /* Make the image black and white */
 }
 
@@ -148,10 +150,6 @@
 }
 
 @media screen and (max-width: 1024px) {
-    .sustainable-hero {
-        aspect-ratio: 2 / 1;
-    }
-    
     .sustainable-description {
         margin: 50px auto;
     }
@@ -166,10 +164,6 @@
 }
 
 @media screen and (max-width: 768px) {
-    .sustainable-hero {
-        aspect-ratio: 1.8 / 1;
-    }
-    
     .sustainable-hero .collection-title {
         font-size: 2rem;
     }
@@ -199,24 +193,12 @@
         font-size: 1.1rem;
     }
     
-    .sustainable-hero .hero-image img {
-        object-position: center 25%;
-    }
-    
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media screen and (max-width: 580px) {
-    .sustainable-hero {
-        aspect-ratio: 1.5 / 1;
-    }
-    
-    .sustainable-hero .hero-image img {
-        object-position: center 20%;
-    }
-    
     .sustainable-content h2 {
         font-size: 1rem;
     }
@@ -227,10 +209,6 @@
 }
 
 @media screen and (max-width: 480px) {
-    .sustainable-hero {
-        aspect-ratio: 1.2 / 1;
-    }
-    
     .sustainable-hero .collection-label {
         right: 5%;
         bottom: 8%;
@@ -263,16 +241,5 @@
     
     .sustainable-description {
         margin: 30px auto;
-    }
-}
-
-/* Additional adjustment for very small screens */
-@media screen and (max-width: 360px) {
-    .sustainable-hero {
-        aspect-ratio: 1 / 1;
-    }
-    
-    .sustainable-hero .hero-image img {
-        object-position: center 10%;
     }
 }
