@@ -4,23 +4,20 @@
 .collection-hero {
     position: relative;
     width: 100%;
-    /* Removed fixed height to allow for proper image proportions */
     background-color: #FFD1DC; /* Light pink background */
     overflow: hidden;
-    aspect-ratio: 2.5 / 1; /* Match your image's aspect ratio of 2500x1000 */
-    max-height: 600px; /* Cap maximum height for very large screens */
 }
 
 .hero-image {
     width: 100%;
-    height: 100%;
+    position: relative;
 }
 
 .hero-image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 25%; /* Adjust this value to prevent head cropping - moves focus point upward */
+    height: auto;
+    display: block;
+    max-width: 100%;
 }
 
 .collection-label {
@@ -128,6 +125,9 @@
     .collection-title {
         font-size: 2rem;
     }
+    .collection-label {
+        bottom: 10%;
+    }
     
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -158,8 +158,8 @@
     }
     
     .collection-label {
-        right: 20px;
-        bottom: 10%; /* Adjust position for mobile */
+        right: 5%;
+        bottom: 8%;
     }
     
     .collection-category {
