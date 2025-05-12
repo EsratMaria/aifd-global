@@ -244,17 +244,19 @@
         font-size: 0.875rem;
     }
     
+    /* Modified to show 2 images side by side */
     .gallery-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px; /* Reduced gap for better mobile spacing */
     }
     
     .gallery-item {
-        padding-bottom: 120%;
+        padding-bottom: 130%; /* Adjusted to work better in the smaller width */
     }
     
     .gallery-item.large {
-        padding-bottom: 100%;
+        grid-column: span 1; /* Ensures large items only take 1 column */
+        padding-bottom: 130%; /* Consistent with other items */
     }
     
     .sustainable-description {
