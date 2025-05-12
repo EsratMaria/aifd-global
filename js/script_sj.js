@@ -124,6 +124,91 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // NEW: Looks Slider functionality
+    const looksSlider = document.querySelector('.looks-slider');
+    if (looksSlider) {
+        const prevButton = document.querySelector('.slider-prev');
+        const nextButton = document.querySelector('.slider-next');
+        const slides = document.querySelectorAll('.look-slide');
+        
+        // Skip if no slides
+        if (slides.length === 0) return;
+        
+        let currentPosition = 0;
+        let slidesToShow = getSlidesToShow();
+        
+        // Get number of slides to show based on screen width
+        function getSlidesToShow() {
+            if (window.innerWidth <= 480) return 1;
+            if (window.innerWidth <= 768) return 2;
+            if (window.innerWidth <= 1024) return 3;
+            return 4; // Default for desktop
+        }
+        
+        // Update on window resize
+        window.addEventListener('resize', () => {
+            slidesToShow = getSlidesToShow();
+            updateSliderPosition();
+        });
+        
+        // Initialize slider position
+        updateSliderPosition();
+        
+        // Click events for navigation buttons
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                navigateSlider(-slidesToShow);
+            });
+        }
+        
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                navigateSlider(slidesToShow);
+            });
+        }
+        
+        // Touch events for swiping
+        let touchStartX, touchEndX;
+        
+        looksSlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        looksSlider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            
+            if (touchEndX < touchStartX - 50) {
+                // Swipe left - go next
+                navigateSlider(slidesToShow);
+            }
+            
+            if (touchEndX > touchStartX + 50) {
+                // Swipe right - go prev
+                navigateSlider(-slidesToShow);
+            }
+        });
+        
+        // Function to navigate the slider
+        function navigateSlider(step) {
+            currentPosition += step;
+            
+            // Handle bounds
+            if (currentPosition > slides.length - slidesToShow) {
+                currentPosition = 0;
+            } else if (currentPosition < 0) {
+                currentPosition = Math.max(0, slides.length - slidesToShow);
+            }
+            
+            updateSliderPosition();
+        }
+        
+        // Update the slider position
+        function updateSliderPosition() {
+            const slideWidth = 100 / slidesToShow;
+            looksSlider.style.transform = `translateX(-${currentPosition * slideWidth}%)`;
+        }
+    }
+    
     // Slideshow functionality for main banner
     let slideIndex = 0;
     const slides = document.querySelectorAll('.slideshow-slide');
