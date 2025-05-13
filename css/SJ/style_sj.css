@@ -126,32 +126,26 @@ nav ul li a.active {
     letter-spacing: 1px;
 }
 
-/* Updated Slideshow Navigation Dots - FIXED POSITION */
+/* Original Slideshow Navigation Dots (as requested) */
 .slideshow-dots {
     position: absolute;
-    bottom: 30px; /* Increased spacing from bottom */
+    bottom: 15px;
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 25px; 
     z-index: 10;
-    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
-    padding: 8px 0; /* Padding to create space around dots */
-    margin: 0 auto;
-    width: fit-content;
-    border-radius: 20px;
 }
 
 .dot {
-    height: 10px;
-    width: 10px;
+    height: 8px;
+    width: 8px;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
     display: inline-block;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for visibility */
 }
 
 .dot.active {
@@ -266,7 +260,7 @@ nav ul li a.active {
     display: block;
 }
 
-/* Collection Submenu Specific Styles - FIXED LAYOUT */
+/* Collection Submenu Specific Styles */
 .collection-submenu {
     padding: 30px 40px;
 }
@@ -333,7 +327,7 @@ nav ul li a.active {
     text-align: center;
 }
 
-/* Consistent Collection Slides */
+/* IMPROVED Collection Slides - Fixed Height Issue */
 .collection-slider {
     width: 100%;
     position: relative;
@@ -347,7 +341,7 @@ nav ul li a.active {
 .collection-slide {
     width: 100%;
     position: relative;
-    padding-top: 100%; /* 1:1 Aspect ratio for all images */
+    padding-top: 133%; /* Increased height (4:3 aspect ratio) */
 }
 
 .collection-slide a {
@@ -365,8 +359,8 @@ nav ul li a.active {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Cover to maintain aspect ratio */
-    object-position: center; /* Center the image */
+    object-fit: contain; /* This preserves the aspect ratio without cropping */
+    object-position: center;
 }
 
 /* Mobile specific styles */
@@ -551,10 +545,9 @@ footer {
         max-width: 95%;
     }
     
-    /* FIXED: Slider dots position for mobile */
+    /* Keeping slideshow dots in original position as requested */
     .slideshow-dots {
-        bottom: 60px; /* Increased bottom spacing */
-        padding: 10px 15px; /* Larger padding */
+        bottom: 15px;
     }
 }
 
@@ -589,11 +582,6 @@ footer {
         flex: 0 0 100%;
     }
     
-    /* FIXED: Small mobile specific adjustments */
-    .slideshow-dots {
-        bottom: 80px; /* Even more spacing for very small screens */
-    }
-    
     .collection-category h3 {
         font-size: 16px;
     }
@@ -602,8 +590,8 @@ footer {
         font-size: 13px;
     }
     
-    /* Make collection images uniform on small screens */
+    /* FIXED: Collection slide height on mobile */
     .collection-slide {
-        padding-top: 100%; /* Square aspect ratio */
+        padding-top: 133%; /* Maintain 4:3 aspect ratio even on small screens */
     }
 }
