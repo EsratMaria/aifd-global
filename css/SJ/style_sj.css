@@ -126,30 +126,36 @@ nav ul li a.active {
     letter-spacing: 1px;
 }
 
-/* Updated Slideshow Navigation Dots */
+/* Updated Slideshow Navigation Dots - FIXED POSITION */
 .slideshow-dots {
     position: absolute;
-    bottom: 15px;
+    bottom: 30px; /* Increased spacing from bottom */
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
-    gap: 25px; /* Increased spacing between dots from 8px to 15px */
+    gap: 25px;
     z-index: 10;
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+    padding: 8px 0; /* Padding to create space around dots */
+    margin: 0 auto;
+    width: fit-content;
+    border-radius: 20px;
 }
 
 .dot {
-    height: 8px;
-    width: 8px;
+    height: 10px;
+    width: 10px;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
     display: inline-block;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for visibility */
 }
 
 .dot.active {
-    background-color: #e94e97; /* Pink/magenta color for active dot */
+    background-color: #e94e97;
 }
 
 /* Fade animation */
@@ -260,7 +266,7 @@ nav ul li a.active {
     display: block;
 }
 
-/* Collection Submenu Specific Styles */
+/* Collection Submenu Specific Styles - FIXED LAYOUT */
 .collection-submenu {
     padding: 30px 40px;
 }
@@ -288,8 +294,21 @@ nav ul li a.active {
     padding: 5px;
 }
 
+/* FIXED Collection layout for ALL devices */
+.categories-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
 .collection-category {
-    margin-bottom: 50px;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .collection-category h3 {
@@ -298,36 +317,23 @@ nav ul li a.active {
     font-weight: bold;
 }
 
-/* Categories container to display categories side by side */
-.categories-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.collection-category {
-    flex: 1;
-    margin-bottom: 30px;
-}
-
 .subcategories {
-    display: flex;
-    gap: 30px;
+    width: 100%;
 }
 
 .subcategory {
-    flex: 1;
+    width: 100%;
+    margin-bottom: 30px;
 }
 
 .subcategory h4 {
     font-size: 14px;
     margin-bottom: 15px;
     font-weight: normal;
+    text-align: center;
 }
 
-/* FIXED Collection Sliders for all devices */
+/* Consistent Collection Slides */
 .collection-slider {
     width: 100%;
     position: relative;
@@ -341,7 +347,7 @@ nav ul li a.active {
 .collection-slide {
     width: 100%;
     position: relative;
-    padding-top: 133%; /* Creates a consistent aspect ratio (4:3) container */
+    padding-top: 100%; /* 1:1 Aspect ratio for all images */
 }
 
 .collection-slide a {
@@ -359,8 +365,8 @@ nav ul li a.active {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Ensures entire image is visible */
-    background-color: transparent;
+    object-fit: cover; /* Cover to maintain aspect ratio */
+    object-position: center; /* Center the image */
 }
 
 /* Mobile specific styles */
@@ -418,6 +424,18 @@ footer {
     .brand-info {
         padding: 3.75rem 10%;
     }
+
+    /* Desktop collection layout */
+    .categories-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .collection-category {
+        flex: 0 0 calc(33.333% - 30px);
+        max-width: 350px;
+    }
 }
 
 /* Hover functionality for desktop */
@@ -440,7 +458,7 @@ footer {
     }
     
     nav.active {
-        max-height: 500px; /* Increased to accommodate submenu */
+        max-height: 500px;
         overflow-y: auto;
     }
     
@@ -493,7 +511,7 @@ footer {
         overflow-y: auto;
         transform: translateX(100%);
         transition: transform 0.3s ease;
-        display: block; /* Important: keep the submenu structure in DOM */
+        display: block;
         opacity: 0;
         visibility: hidden;
         z-index: 999;
@@ -522,34 +540,21 @@ footer {
         padding: 15px 0;
     }
     
+    /* FIXED: Mobile collection layout */
     .categories-container {
-        display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 20px;
     }
     
     .collection-category {
         width: 100%;
-        max-width: 400px;
+        max-width: 95%;
     }
     
-    .subcategories {
-        display: block;
-    }
-    
-    .subcategory {
-        width: 100%;
-        margin-bottom: 30px;
-    }
-    
-    /* Adjust collection slides for mobile */
-    .collection-slide {
-        padding-top: 120%; /* Slightly shorter aspect ratio for mobile */
-    }
-
-    .slideshow-dots{
-        bottom: 35px;
+    /* FIXED: Slider dots position for mobile */
+    .slideshow-dots {
+        bottom: 60px; /* Increased bottom spacing */
+        padding: 10px 15px; /* Larger padding */
     }
 }
 
@@ -584,25 +589,21 @@ footer {
         flex: 0 0 100%;
     }
     
-    /* Adjust dot size and spacing for mobile */
+    /* FIXED: Small mobile specific adjustments */
     .slideshow-dots {
-        bottom: 45px;
-    }
-    
-    .dot {
-        height: 6px;
-        width: 6px;
+        bottom: 80px; /* Even more spacing for very small screens */
     }
     
     .collection-category h3 {
         font-size: 16px;
     }
-
-    .collection-category {
-        max-width: 90%;
-    }
     
     .subcategory h4 {
         font-size: 13px;
+    }
+    
+    /* Make collection images uniform on small screens */
+    .collection-slide {
+        padding-top: 100%; /* Square aspect ratio */
     }
 }
