@@ -523,13 +523,15 @@ footer {
     }
     
     .categories-container {
-        display: block;
-        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
     }
     
     .collection-category {
         width: 100%;
-        margin-bottom: 40px;
+        max-width: 400px;
     }
     
     .subcategories {
@@ -544,6 +546,10 @@ footer {
     /* Adjust collection slides for mobile */
     .collection-slide {
         padding-top: 120%; /* Slightly shorter aspect ratio for mobile */
+    }
+
+    .slideshow-dots{
+        bottom: 35px;
     }
 }
 
@@ -580,7 +586,7 @@ footer {
     
     /* Adjust dot size and spacing for mobile */
     .slideshow-dots {
-        gap: 12px; /* Slightly reduced gap for mobile but still spacious */
+        bottom: 45px;
     }
     
     .dot {
@@ -590,6 +596,10 @@ footer {
     
     .collection-category h3 {
         font-size: 16px;
+    }
+
+    .collection-category {
+        max-width: 90%;
     }
     
     .subcategory h4 {
