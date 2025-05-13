@@ -253,8 +253,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Show current slide and activate current dot
-        slides[slideIndex].style.display = 'block';
-        slides[slideIndex].classList.add('active');
+        if (slides.length > 0) {
+            slides[slideIndex].style.display = 'block';
+            slides[slideIndex].classList.add('active');
+        }
+        
         if (dots.length > 0) {
             dots[slideIndex].classList.add('active');
         }
@@ -266,47 +269,47 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Initialize slideshow
-    showSlide(0);
-    
-    // Auto advance slides every 5 seconds
-    let slideshowInterval = setInterval(nextSlide, 5000);
-    
-    // Pause slideshow on hover
-    const slideshowContainer = document.querySelector('.slideshow-container');
-    if (slideshowContainer) {
-        slideshowContainer.addEventListener('mouseenter', () => {
-            clearInterval(slideshowInterval);
-        });
+    if (slides.length > 0) {
+        showSlide(0);
         
-        slideshowContainer.addEventListener('mouseleave', () => {
-            slideshowInterval = setInterval(nextSlide, 5000);
-        });
-    }
-    
-    // Swipe functionality for main slideshow
-    let mainTouchStartX = 0;
-    let mainTouchEndX = 0;
-    
-    function checkMainSwipeDirection() {
-        if (mainTouchEndX < mainTouchStartX - 50) {
-            // Swipe left, go to next slide
-            nextSlide();
-        }
-        if (mainTouchEndX > mainTouchStartX + 50) {
-            // Swipe right, go to previous slide
-            showSlide(slideIndex - 1);
-        }
-    }
-    
-    if (slideshowContainer) {
-        slideshowContainer.addEventListener('touchstart', e => {
-            mainTouchStartX = e.changedTouches[0].screenX;
-        });
+        // Auto advance slides every 5 seconds
+        let slideshowInterval = setInterval(nextSlide, 5000);
         
-        slideshowContainer.addEventListener('touchend', e => {
-            mainTouchEndX = e.changedTouches[0].screenX;
-            checkMainSwipeDirection();
-        });
+        // Pause slideshow on hover
+        const slideshowContainer = document.querySelector('.slideshow-container');
+        if (slideshowContainer) {
+            slideshowContainer.addEventListener('mouseenter', () => {
+                clearInterval(slideshowInterval);
+            });
+            
+            slideshowContainer.addEventListener('mouseleave', () => {
+                slideshowInterval = setInterval(nextSlide, 5000);
+            });
+            
+            // Swipe functionality for main slideshow
+            let mainTouchStartX = 0;
+            let mainTouchEndX = 0;
+            
+            function checkMainSwipeDirection() {
+                if (mainTouchEndX < mainTouchStartX - 50) {
+                    // Swipe left, go to next slide
+                    nextSlide();
+                }
+                if (mainTouchEndX > mainTouchStartX + 50) {
+                    // Swipe right, go to previous slide
+                    showSlide(slideIndex - 1);
+                }
+            }
+            
+            slideshowContainer.addEventListener('touchstart', e => {
+                mainTouchStartX = e.changedTouches[0].screenX;
+            });
+            
+            slideshowContainer.addEventListener('touchend', e => {
+                mainTouchEndX = e.changedTouches[0].screenX;
+                checkMainSwipeDirection();
+            });
+        }
     }
     
     // CTA button event
@@ -320,13 +323,69 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle window resize - remove active class on desktop
     window.addEventListener('resize', function() {
         if (window.innerWidth > 768) {
-            if (collectionSubmenu.classList.contains('active')) {
+            if (collectionSubmenu && collectionSubmenu.classList.contains('active')) {
                 collectionSubmenu.classList.remove('active');
                 document.body.style.overflow = '';
             }
-            if (nav.classList.contains('active')) {
+            if (nav && nav.classList.contains('active')) {
                 nav.classList.remove('active');
             }
         }
     });
+
+    // Coming Soon Page Functionality
+    // Check if countdown elements exist before trying to use them
+    const daysElement = document.getElementById("days");
+    const hoursElement = document.getElementById("hours");
+    const minutesElement = document.getElementById("minutes");
+    const secondsElement = document.getElementById("seconds");
+    const countdownContainer = document.querySelector(".countdown");
+    
+    if (daysElement && hoursElement && minutesElement && secondsElement) {
+        // Set the date we're counting down to (30 days from now)
+        const countDownDate = new Date();
+        countDownDate.setDate(countDownDate.getDate() + 30);
+        
+        // Update the countdown every 1 second
+        const countdown = setInterval(function() {
+            // Get today's date and time
+            const now = new Date().getTime();
+            
+            // Find the distance between now and the countdown date
+            const distance = countDownDate - now;
+            
+            // Time calculations
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Display the result with leading zeros
+            daysElement.textContent = days.toString().padStart(2, '0');
+            hoursElement.textContent = hours.toString().padStart(2, '0');
+            minutesElement.textContent = minutes.toString().padStart(2, '0');
+            secondsElement.textContent = seconds.toString().padStart(2, '0');
+            
+            // If the countdown is finished
+            if (distance < 0) {
+                clearInterval(countdown);
+                if (countdownContainer) {
+                    countdownContainer.innerHTML = "LAUNCHING TODAY!";
+                }
+            }
+        }, 1000);
+    }
+    
+    // Subscribe form handling
+    const subscribeForm = document.querySelector('.subscribe-form');
+    if (subscribeForm) {
+        subscribeForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const emailInput = this.querySelector('input[type="email"]');
+            if (emailInput && emailInput.value) {
+                alert('Thank you! You will be notified when we launch.');
+                this.reset();
+            }
+        });
+    }
 });
