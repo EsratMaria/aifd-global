@@ -126,7 +126,7 @@ nav ul li a.active {
     letter-spacing: 1px;
 }
 
-/* Original Slideshow Navigation Dots (as requested) */
+/* Updated Slideshow Navigation Dots */
 .slideshow-dots {
     position: absolute;
     bottom: 15px;
@@ -134,7 +134,7 @@ nav ul li a.active {
     right: 0;
     display: flex;
     justify-content: center;
-    gap: 25px; 
+    gap: 25px; /* Increased spacing between dots from 8px to 15px */
     z-index: 10;
 }
 
@@ -149,7 +149,7 @@ nav ul li a.active {
 }
 
 .dot.active {
-    background-color: #e94e97;
+    background-color: #e94e97; /* Pink/magenta color for active dot */
 }
 
 /* Fade animation */
@@ -288,21 +288,8 @@ nav ul li a.active {
     padding: 5px;
 }
 
-/* FIXED Collection layout for ALL devices */
-.categories-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
 .collection-category {
-    width: 100%;
-    max-width: 700px;
-    margin-bottom: 20px;
-    text-align: center;
+    margin-bottom: 50px;
 }
 
 .collection-category h3 {
@@ -311,23 +298,36 @@ nav ul li a.active {
     font-weight: bold;
 }
 
+/* Categories container to display categories side by side */
+.categories-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.collection-category {
+    flex: 1;
+    margin-bottom: 30px;
+}
+
 .subcategories {
-    width: 100%;
+    display: flex;
+    gap: 30px;
 }
 
 .subcategory {
-    width: 100%;
-    margin-bottom: 30px;
+    flex: 1;
 }
 
 .subcategory h4 {
     font-size: 14px;
     margin-bottom: 15px;
     font-weight: normal;
-    text-align: center;
 }
 
-/* IMPROVED Collection Slides - Fixed Height Issue */
+/* FIXED Collection Sliders for all devices */
 .collection-slider {
     width: 100%;
     position: relative;
@@ -341,7 +341,7 @@ nav ul li a.active {
 .collection-slide {
     width: 100%;
     position: relative;
-    padding-top: 133%; /* Increased height (4:3 aspect ratio) */
+    padding-top: 133%; /* Creates a consistent aspect ratio (4:3) container */
 }
 
 .collection-slide a {
@@ -359,8 +359,8 @@ nav ul li a.active {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* This preserves the aspect ratio without cropping */
-    object-position: center;
+    object-fit: contain; /* Ensures entire image is visible */
+    background-color: transparent;
 }
 
 /* Mobile specific styles */
@@ -418,18 +418,6 @@ footer {
     .brand-info {
         padding: 3.75rem 10%;
     }
-
-    /* Desktop collection layout */
-    .categories-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .collection-category {
-        flex: 0 0 calc(33.333% - 30px);
-        max-width: 350px;
-    }
 }
 
 /* Hover functionality for desktop */
@@ -452,7 +440,7 @@ footer {
     }
     
     nav.active {
-        max-height: 500px;
+        max-height: 500px; /* Increased to accommodate submenu */
         overflow-y: auto;
     }
     
@@ -505,7 +493,7 @@ footer {
         overflow-y: auto;
         transform: translateX(100%);
         transition: transform 0.3s ease;
-        display: block;
+        display: block; /* Important: keep the submenu structure in DOM */
         opacity: 0;
         visibility: hidden;
         z-index: 999;
@@ -534,20 +522,28 @@ footer {
         padding: 15px 0;
     }
     
-    /* FIXED: Mobile collection layout */
     .categories-container {
-        flex-direction: column;
-        align-items: center;
+        display: block;
+        margin-top: 20px;
     }
     
     .collection-category {
         width: 100%;
-        max-width: 95%;
+        margin-bottom: 40px;
     }
     
-    /* Keeping slideshow dots in original position as requested */
-    .slideshow-dots {
-        bottom: 15px;
+    .subcategories {
+        display: block;
+    }
+    
+    .subcategory {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+    
+    /* Adjust collection slides for mobile */
+    .collection-slide {
+        padding-top: 120%; /* Slightly shorter aspect ratio for mobile */
     }
 }
 
@@ -582,16 +578,21 @@ footer {
         flex: 0 0 100%;
     }
     
+    /* Adjust dot size and spacing for mobile */
+    .slideshow-dots {
+        gap: 12px; /* Slightly reduced gap for mobile but still spacious */
+    }
+    
+    .dot {
+        height: 6px;
+        width: 6px;
+    }
+    
     .collection-category h3 {
         font-size: 16px;
     }
     
     .subcategory h4 {
         font-size: 13px;
-    }
-    
-    /* FIXED: Collection slide height on mobile */
-    .collection-slide {
-        padding-top: 133%; /* Maintain 4:3 aspect ratio even on small screens */
     }
 }
