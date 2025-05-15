@@ -286,6 +286,7 @@ nav ul li a.active {
     font-size: 18px;
     cursor: pointer;
     padding: 5px;
+    color: #000;
 }
 
 .collection-category {
