@@ -20,16 +20,25 @@ header {
     background-color: white;
     position: relative;
     z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .logo {
     margin-bottom: 0.625rem;
     text-align: center;
+    flex: 1;
 }
 
 .logo img {
     max-height: 5rem;
     width: auto;
+}
+
+nav {
+    width: 100%;
 }
 
 nav ul {
@@ -69,6 +78,139 @@ nav ul li a.active {
     height: 3px;
     width: 100%;
     background-color: black;
+}
+
+/* Search Icon Styles - Improved */
+.search-icon {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 101;
+}
+
+.search-toggle {
+    color: #000;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.search-box {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    display: none;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 3px;
+    width: 280px;
+    margin-top: 10px;
+}
+
+.search-box.active {
+    display: block;
+}
+
+.search-form {
+    display: flex;
+    width: 100%;
+}
+
+.search-form input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 3px 0 0 3px;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-form button {
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 0 3px 3px 0;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Currency Converter Styles - Improved */
+.currency-converter {
+    position: absolute;
+    right: 70px;
+    top: 20px;
+    z-index: 101;
+}
+
+.currency-selector {
+    cursor: pointer;
+}
+
+.current-currency {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.current-currency img {
+    width: 16px;
+    height: 12px;
+    object-fit: cover;
+}
+
+.currency-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 180px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 3px;
+    display: none;
+    z-index: 1000;
+    margin-top: 10px;
+}
+
+.currency-dropdown.active {
+    display: block;
+}
+
+.currency-option {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.3s;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.currency-option:hover {
+    background: #f5f5f5;
+}
+
+.currency-option img {
+    width: 16px;
+    height: 12px;
+    object-fit: cover;
+}
+
+/* Social Media Icons */
+.social-icons {
+    display: none; /* Hidden by default, shown on mobile */
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-icon {
+    color: #000;
+    font-size: 18px;
 }
 
 /* Slideshow Styles */
@@ -409,6 +551,16 @@ footer {
     font-size: 0.75rem;
 }
 
+/* Price elements that will be converted */
+.product-price {
+    position: relative;
+    transition: color 0.3s;
+}
+
+.product-price.converting {
+    color: #e94e97;
+}
+
 /* Media Queries for Responsive Design */
 @media screen and (max-width: 1024px) {
     .hero-text {
@@ -433,11 +585,48 @@ footer {
         display: flex;
     }
     
+    header {
+        padding: 1rem;
+        justify-content: center;
+    }
+    
+    .logo {
+        flex: 0 0 auto;
+        margin: 0 auto;
+    }
+    
+    .search-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .currency-converter {
+        position: static;
+        margin-top: 15px;
+        order: 3;
+    }
+    
+    .currency-dropdown {
+        width: 100%;
+        left: 0;
+        right: 0;
+    }
+    
+    .social-icons.mobile-only {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        order: 4;
+    }
+    
     nav {
         overflow: hidden;
         max-height: 0;
         transition: max-height 0.5s ease-out;
         width: 100%;
+        order: 2;
     }
     
     nav.active {
@@ -595,5 +784,13 @@ footer {
     
     .subcategory h4 {
         font-size: 13px;
+    }
+    
+    .search-icon {
+        right: 10px;
+    }
+    
+    .search-box {
+        width: 200px;
     }
 }

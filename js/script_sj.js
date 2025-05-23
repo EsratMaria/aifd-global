@@ -388,4 +388,236 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // IMPROVED: Search icon functionality
+    const searchToggle = document.querySelector('.search-toggle');
+    const searchBox = document.querySelector('.search-box');
+    const searchForm = document.querySelector('.search-form');
+    const searchInput = document.querySelector('.search-form input');
+
+    if (searchToggle && searchBox) {
+        // Toggle search box when clicking the search icon
+        searchToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation(); // Stop event from bubbling
+            searchBox.classList.toggle('active');
+            
+            // Focus the input when opening
+            if (searchBox.classList.contains('active') && searchInput) {
+                setTimeout(() => searchInput.focus(), 100);
+            }
+        });
+        
+        // Prevent search box from closing when clicking inside it
+        searchBox.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Handle search form submission
+        if (searchForm) {
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm) {
+                    // Here you would normally redirect to search results
+                    alert('Searching for: ' + searchTerm);
+                    // window.location.href = '/search?q=' + encodeURIComponent(searchTerm);
+                }
+            });
+        }
+
+        // Close search box when clicking outside
+        document.addEventListener('click', function() {
+            if (searchBox.classList.contains('active')) {
+                searchBox.classList.remove('active');
+            }
+        });
+    }
+
+    // IMPROVED: Currency converter functionality
+    const currencySelector = document.querySelector('.currency-selector');
+    const currencyDropdown = document.querySelector('.currency-dropdown');
+    const currencyOptions = document.querySelectorAll('.currency-option');
+    const currentCurrencyDisplay = document.querySelector('.current-currency span');
+    const currentCurrencyFlag = document.querySelector('.current-currency img');
+    
+    // Currency storage in local storage
+    let currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
+    let currentSymbol = localStorage.getItem('selectedSymbol') || '$';
+    let currentRate = parseFloat(localStorage.getItem('selectedRate')) || 1;
+    
+    // Initialize the display with stored currency or default
+    if (currentCurrencyDisplay && currentCurrencyFlag) {
+        currentCurrencyDisplay.textContent = `${currentCurrency} (${currentSymbol})`;
+        
+        // Update flag based on currency
+        const flagCode = getCurrencyFlagCode(currentCurrency);
+        currentCurrencyFlag.src = `https://flagcdn.com/16x12/${flagCode}.png`;
+        
+        // Convert prices on page load
+        convertAllPrices();
+    }
+    
+    if (currencySelector && currencyDropdown) {
+        // Toggle currency dropdown
+        currencySelector.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            currencyDropdown.classList.toggle('active');
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        currencyDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            if (currencyDropdown.classList.contains('active')) {
+                currencyDropdown.classList.remove('active');
+            }
+        });
+        
+        // Currency option selection
+        currencyOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const newCurrency = this.getAttribute('data-currency');
+                const newSymbol = this.getAttribute('data-symbol');
+                const newRate = parseFloat(this.getAttribute('data-rate'));
+                
+                if (newCurrency !== currentCurrency) {
+                    // Update current currency
+                    currentCurrency = newCurrency;
+                    currentSymbol = newSymbol;
+                    currentRate = newRate;
+                    
+                    // Save to local storage
+                    localStorage.setItem('selectedCurrency', currentCurrency);
+                    localStorage.setItem('selectedSymbol', currentSymbol);
+                    localStorage.setItem('selectedRate', currentRate);
+                    
+                    // Update display
+                    if (currentCurrencyDisplay) {
+                        currentCurrencyDisplay.textContent = `${currentCurrency} (${currentSymbol})`;
+                    }
+                    
+                    // Update flag
+                    if (currentCurrencyFlag) {
+                        const flagCode = getCurrencyFlagCode(currentCurrency);
+                        currentCurrencyFlag.src = `https://flagcdn.com/16x12/${flagCode}.png`;
+                    }
+                    
+                    // Convert all prices
+                    convertAllPrices();
+                }
+                
+                // Close dropdown
+                currencyDropdown.classList.remove('active');
+            });
+        });
+    }
+    
+    // Helper function to get flag code from currency
+    function getCurrencyFlagCode(currency) {
+        switch(currency) {
+            case 'BDT': return 'bd';
+            case 'INR': return 'in';
+            case 'AUD': return 'au';
+            case 'USD': return 'us';
+            case 'EUR': return 'eu';
+            default: return 'us';
+        }
+    }
+    
+    // Function to convert all prices on the page
+    function convertAllPrices() {
+        // Target both generic price elements and specific product prices
+        const priceElements = document.querySelectorAll('.price, .product-price');
+        
+        priceElements.forEach(element => {
+            // Add converting class for animation
+            element.classList.add('converting');
+            
+            // Get original price if stored, otherwise extract from current text
+            let originalPrice;
+            if (element.hasAttribute('data-original-price')) {
+                originalPrice = parseFloat(element.getAttribute('data-original-price'));
+            } else {
+                // Extract numeric value from text
+                const priceText = element.textContent.trim();
+                
+                // Handle "Tk. 25,000" format
+                if (priceText.startsWith('Tk.')) {
+                    const numericValue = priceText.replace('Tk.', '').replace(/,/g, '').trim();
+                    originalPrice = parseFloat(numericValue);
+                    // Store the base price in BDT for future conversions
+                    element.setAttribute('data-original-currency', 'BDT');
+                    element.setAttribute('data-original-price', originalPrice);
+                } else {
+                    // Handle other formats
+                    const numericValue = priceText.replace(/[^0-9.]/g, '');
+                    originalPrice = parseFloat(numericValue);
+                    // Assume USD if not specified
+                    element.setAttribute('data-original-currency', 'USD');
+                    element.setAttribute('data-original-price', originalPrice);
+                }
+            }
+            
+            // Get the original currency to apply the correct conversion
+            const originalCurrency = element.getAttribute('data-original-currency') || 'USD';
+            
+            if (!isNaN(originalPrice)) {
+                let convertedPrice;
+                
+                // Convert from original currency to selected currency
+                if (originalCurrency === 'BDT') {
+                    // Convert from BDT to USD first (assuming rate is for BDT to USD)
+                    const inUSD = originalPrice / 110.5; // Using the BDT rate from your data
+                    // Then convert USD to target currency
+                    convertedPrice = (inUSD * currentRate).toFixed(2);
+                } else {
+                    // Direct conversion if original is in USD
+                    convertedPrice = (originalPrice * currentRate).toFixed(2);
+                }
+                
+                // Format based on currency conventions
+                const formattedPrice = formatPrice(convertedPrice);
+                
+                // Update the price display
+                element.textContent = formattedPrice;
+            }
+            
+            // Remove converting class after animation
+            setTimeout(() => {
+                element.classList.remove('converting');
+            }, 500);
+        });
+    }
+    
+    // Helper function to format price based on currency
+    function formatPrice(price) {
+        const numPrice = parseFloat(price);
+        
+        // Format with thousand separators
+        const formattedNumber = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(numPrice);
+        
+        // Position symbol based on currency
+        switch(currentCurrency) {
+            case 'BDT':
+                return `${currentSymbol} ${formattedNumber}`;
+            case 'INR':
+                return `${currentSymbol} ${formattedNumber}`;
+            case 'AUD':
+                return `${currentSymbol}${formattedNumber}`;
+            case 'USD':
+                return `${currentSymbol}${formattedNumber}`;
+            case 'EUR':
+                return `${formattedNumber} ${currentSymbol}`;
+            default:
+                return `${currentSymbol}${formattedNumber}`;
+        }
+    }
 });
