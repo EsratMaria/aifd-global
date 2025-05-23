@@ -8,10 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Mobile navigation overlay -->
+    <div class="mobile-nav-overlay"></div>
+    
     <header>
+        <div class="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="mobile-close-btn">×</div>
+
         <div class="logo">
             <a href="sj.html"><img src="../resources/LOGO/ss logo.png" alt="Shoukhin Jashim Logo"></a>
         </div>
+
         <!-- Search icon -->
         <div class="search-icon">
             <a href="#" class="search-toggle">
@@ -27,7 +38,7 @@
             </div>
         </div>
 
-        <!-- Currency converter -->
+        <!-- Currency converter (for desktop) -->
         <div class="currency-converter">
             <div class="currency-selector">
                 <div class="current-currency">
@@ -55,18 +66,6 @@
             </div>
         </div>
 
-        <!-- Social media icons (visible only on mobile) -->
-        <div class="social-icons mobile-only">
-            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-        </div>
-
-        <div class="mobile-menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
         <nav>
             <ul class="main-menu">
                 <li><a href="coming-soon.html">NEW IN</a></li>
@@ -143,6 +142,13 @@
                 <li><a href="about-us/about-us.html">SHOUKHIN JASHIM</a></li>
             </ul>
         </nav>
+
+        <!-- Social media icons (mobile only) -->
+        <div class="social-icons mobile-only">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        </div>
     </header>
 
     <section class="hero">
