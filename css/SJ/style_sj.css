@@ -11,7 +11,6 @@ body {
     color: #000;
     background-color: #fff;
     overflow-x: hidden;
-    position: relative;
 }
 
 /* Header */
@@ -40,8 +39,6 @@ header {
 
 nav {
     width: 100%;
-    position: relative;
-    z-index: 100;
 }
 
 nav ul {
@@ -81,31 +78,6 @@ nav ul li a.active {
     height: 3px;
     width: 100%;
     background-color: black;
-}
-
-.mobile-close-btn {
-    display: none;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 28px;
-    color: white;
-    cursor: pointer;
-    z-index: 1005; /* Increased z-index to be above other elements */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease;
-}
-
-.mobile-nav-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 999;
 }
 
 /* Search Icon Styles - Improved */
@@ -231,6 +203,9 @@ nav ul li a.active {
 /* Social Media Icons */
 .social-icons {
     display: none; /* Hidden by default, shown on mobile */
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
 }
 
 .social-icon {
@@ -586,11 +561,6 @@ footer {
     color: #e94e97;
 }
 
-/* Mobile Bottom Widgets */
-.mobile-bottom-widgets {
-    display: none;
-}
-
 /* Media Queries for Responsive Design */
 @media screen and (max-width: 1024px) {
     .hero-text {
@@ -611,10 +581,6 @@ footer {
 }
 
 @media screen and (max-width: 768px) {
-    body.menu-open {
-        overflow: hidden;
-    }
-    
     .mobile-menu-toggle {
         display: flex;
     }
@@ -631,139 +597,80 @@ footer {
     
     .search-icon {
         position: absolute;
-        right: 1.5rem;
-        top: 1.5rem;
-        transform: none;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
-    .search-box {
-        position: fixed;
-        top: 0;
+    .currency-converter {
+        position: static;
+        margin-top: 15px;
+        order: 3;
+    }
+    
+    .currency-dropdown {
+        width: 100%;
         left: 0;
         right: 0;
-        width: 100%;
-        margin: 0;
-        padding: 15px;
-        border-radius: 0;
-        background: rgba(255, 255, 255, 0.95);
-        z-index: 1002;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
-    /* Mobile Navigation Styling */
+    .social-icons.mobile-only {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        order: 4;
+    }
+    
     nav {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 85%;
-        height: 100%;
-        background-color: #6b4b28; /* Brown color from reference */
-        z-index: 1000;
-        transition: left 0.3s ease;
-        overflow-y: auto;
-        padding: 70px 0 120px; /* Add bottom padding for widgets */
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.5s ease-out;
+        width: 100%;
+        order: 2;
     }
     
     nav.active {
-        left: 0;
-        max-height: none;
-    }
-    
-    .mobile-nav-overlay.active {
-        display: block;
-    }
-    
-    .mobile-close-btn {
-        display: block;
-    }
-
-    nav.active + .mobile-close-btn {
-        opacity: 1;
-        visibility: visible;
+        max-height: 500px; /* Increased to accommodate submenu */
+        overflow-y: auto;
     }
     
     nav ul {
         flex-direction: column;
-        gap: 0;
-        padding: 0;
+        gap: 0.9375rem;
+        padding: 1.25rem 0;
     }
     
-    nav ul li {
-        width: 100%;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    .hero-text {
+        right: 5%;
+        bottom: 15%;
     }
     
-    nav ul li a {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 25px;
-        color: white !important; /* Force white color */
-        font-size: 16px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        pointer-events: auto !important; /* Make sure links are clickable */
+    .collection-name {
+        font-size: 1.5rem;
     }
     
-    /* Add + icon to expandable menu items */
-    .has-submenu > a::after {
-        content: "+";
-        font-size: 20px;
+    .collection-subtitle {
+        font-size: 0.875rem;
     }
     
-    .has-submenu.active > a::after {
-        content: "-";
+    .brand-info h1 {
+        font-size: 2rem;
     }
     
-    /* Mobile Bottom Widgets */
-    .mobile-bottom-widgets {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        padding: 20px 25px;
-        background-color: #6b4b28; /* Same as nav background */
-        display: block;
-    }
-    
-    /* Mobile Currency and Social Positioning */
-    .mobile-bottom-widgets .currency-converter {
-        position: static;
-        margin: 0 0 20px 0;
-        width: 100%;
-    }
-    
-    .mobile-bottom-widgets .current-currency {
-        color: white;
-    }
-    
-    .mobile-bottom-widgets .currency-dropdown {
-        bottom: 100%;
-        top: auto;
-        left: 0;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    
-    .mobile-bottom-widgets .social-icons {
-        display: flex;
+    .footer-container {
         justify-content: flex-start;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        padding-top: 20px;
-        gap: 25px;
     }
     
-    .mobile-bottom-widgets .social-icon {
-        color: white;
-        font-size: 22px;
+    .footer-section {
+        flex: 0 0 50%;
+        padding-right: 1.25rem;
     }
     
-    /* Hide desktop currency in mobile view */
-    header > .currency-converter {
-        display: none;
+    /* Mobile menu adjustments */
+    .has-submenu {
+        position: relative;
     }
     
-    /* Submenu adjustments */
     .submenu {
         position: fixed;
         top: 0;
@@ -779,7 +686,7 @@ footer {
         display: block; /* Important: keep the submenu structure in DOM */
         opacity: 0;
         visibility: hidden;
-        z-index: 1001;
+        z-index: 999;
     }
     
     .has-submenu.active .submenu {
@@ -827,32 +734,6 @@ footer {
     /* Adjust collection slides for mobile */
     .collection-slide {
         padding-top: 120%; /* Slightly shorter aspect ratio for mobile */
-    }
-    
-    .hero-text {
-        right: 5%;
-        bottom: 15%;
-    }
-    
-    .collection-name {
-        font-size: 1.5rem;
-    }
-    
-    .collection-subtitle {
-        font-size: 0.875rem;
-    }
-    
-    .brand-info h1 {
-        font-size: 2rem;
-    }
-    
-    .footer-container {
-        justify-content: flex-start;
-    }
-    
-    .footer-section {
-        flex: 0 0 50%;
-        padding-right: 1.25rem;
     }
 }
 
@@ -903,5 +784,13 @@ footer {
     
     .subcategory h4 {
         font-size: 13px;
+    }
+    
+    .search-icon {
+        right: 10px;
+    }
+    
+    .search-box {
+        width: 200px;
     }
 }

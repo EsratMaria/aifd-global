@@ -1,114 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const menuToggle = document.querySelector('.mobile-menu-toggle');
-    const mobileCloseBtn = document.querySelector('.mobile-close-btn');
     const nav = document.querySelector('nav');
-    const mobileOverlay = document.querySelector('.mobile-nav-overlay');
-    const body = document.body;
     
-    // Create bottom widgets container for mobile menu
-    function setupMobileMenu() {
-        // Only setup if mobile bottom widgets don't already exist
-        if (!document.querySelector('.mobile-bottom-widgets')) {
-            const mobileBottomWidgets = document.createElement('div');
-            mobileBottomWidgets.className = 'mobile-bottom-widgets';
-            
-            // Create currency converter for mobile
-            const currencyConverter = document.querySelector('.currency-converter');
-            if (currencyConverter) {
-                const currencyClone = currencyConverter.cloneNode(true);
-                mobileBottomWidgets.appendChild(currencyClone);
-                
-                // Initialize currency events for the cloned element
-                const currencySelector = currencyClone.querySelector('.currency-selector');
-                const currencyDropdown = currencyClone.querySelector('.currency-dropdown');
-                const currencyOptions = currencyClone.querySelectorAll('.currency-option');
-                
-                initCurrencyEvents(currencySelector, currencyDropdown, currencyOptions);
-            }
-            
-            // Create social icons for mobile
-            const socialIcons = document.createElement('div');
-            socialIcons.className = 'social-icons';
-            
-            const socialLinks = [
-                { icon: 'facebook-f', url: '#' },
-                { icon: 'twitter', url: '#' },
-                { icon: 'instagram', url: '#' }
-            ];
-            
-            socialLinks.forEach(social => {
-                const link = document.createElement('a');
-                link.href = social.url;
-                link.className = 'social-icon';
-                
-                const icon = document.createElement('i');
-                icon.className = `fab fa-${social.icon}`;
-                
-                link.appendChild(icon);
-                socialIcons.appendChild(link);
-            });
-            
-            mobileBottomWidgets.appendChild(socialIcons);
-            
-            // Add to navigation
-            nav.appendChild(mobileBottomWidgets);
-        }
-    }
-    
-    // Toggle mobile menu
     if (menuToggle) {
-        menuToggle.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent event bubbling
-            setupMobileMenu();
-            nav.classList.add('active');
-            mobileOverlay.classList.add('active');
-            body.classList.add('menu-open');
-            
-            // Ensure X button is visible
-            if (mobileCloseBtn) {
-                mobileCloseBtn.style.opacity = '1';
-                mobileCloseBtn.style.visibility = 'visible';
-            }
+        menuToggle.addEventListener('click', function() {
+            nav.classList.toggle('active');
         });
     }
-
-    // Close mobile menu
-    function closeMobileMenu(e) {
-        if (e) e.stopPropagation(); // Prevent event bubbling
-        nav.classList.remove('active');
-        mobileOverlay.classList.remove('active');
-        body.classList.remove('menu-open');
-        
-        // Hide X button
-        if (mobileCloseBtn) {
-            mobileCloseBtn.style.opacity = '0';
-            mobileCloseBtn.style.visibility = 'hidden';
-        }
-    }
-
-    if (mobileCloseBtn) {
-        mobileCloseBtn.addEventListener('click', closeMobileMenu);
-    }
-    
-    if (mobileOverlay) {
-        mobileOverlay.addEventListener('click', closeMobileMenu);
-    }
-    
-    // Enable mobile menu link clicks by preventing default only for submenu links
-    document.querySelectorAll('nav ul li a').forEach(link => {
-        if (link.classList.contains('collection-link')) {
-            link.addEventListener('click', function(e) {
-                if (window.innerWidth <= 768) {
-                    e.preventDefault();
-                    const submenuParent = this.closest('.has-submenu');
-                    if (submenuParent) {
-                        submenuParent.classList.toggle('active');
-                    }
-                }
-            });
-        }
-    });
     
     // Collection dropdown functionality
     const collectionLink = document.querySelector('.collection-link');
@@ -117,16 +16,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeBtn = document.querySelector('.close-btn');
     const backBtn = document.querySelector('.back-btn');
     
+    // Collection link click handler - different for mobile and desktop
+    if (collectionLink) {
+        collectionLink.addEventListener('click', function(e) {
+            // Only prevent default and toggle submenu on mobile
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                collectionSubmenu.classList.toggle('active');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+        });
+    }
+    
     // Close and back buttons for mobile
     if (closeBtn) {
         closeBtn.addEventListener('click', function() {
             collectionSubmenu.classList.remove('active');
+            document.body.style.overflow = '';
         });
     }
     
     if (backBtn) {
         backBtn.addEventListener('click', function() {
             collectionSubmenu.classList.remove('active');
+            document.body.style.overflow = '';
         });
     }
     
@@ -134,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (submenuOverlay) {
         submenuOverlay.addEventListener('click', function() {
             collectionSubmenu.classList.remove('active');
+            document.body.style.overflow = '';
         });
     }
     
@@ -209,6 +123,91 @@ document.addEventListener('DOMContentLoaded', function() {
             slides.addEventListener('transitionend', handleTransitionEnd);
         }
     });
+    
+    // NEW: Looks Slider functionality
+    const looksSlider = document.querySelector('.looks-slider');
+    if (looksSlider) {
+        const prevButton = document.querySelector('.slider-prev');
+        const nextButton = document.querySelector('.slider-next');
+        const slides = document.querySelectorAll('.look-slide');
+        
+        // Skip if no slides
+        if (slides.length === 0) return;
+        
+        let currentPosition = 0;
+        let slidesToShow = getSlidesToShow();
+        
+        // Get number of slides to show based on screen width
+        function getSlidesToShow() {
+            if (window.innerWidth <= 480) return 1;
+            if (window.innerWidth <= 768) return 2;
+            if (window.innerWidth <= 1024) return 3;
+            return 4; // Default for desktop
+        }
+        
+        // Update on window resize
+        window.addEventListener('resize', () => {
+            slidesToShow = getSlidesToShow();
+            updateSliderPosition();
+        });
+        
+        // Initialize slider position
+        updateSliderPosition();
+        
+        // Click events for navigation buttons
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                navigateSlider(-slidesToShow);
+            });
+        }
+        
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                navigateSlider(slidesToShow);
+            });
+        }
+        
+        // Touch events for swiping
+        let touchStartX, touchEndX;
+        
+        looksSlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        looksSlider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            
+            if (touchEndX < touchStartX - 50) {
+                // Swipe left - go next
+                navigateSlider(slidesToShow);
+            }
+            
+            if (touchEndX > touchStartX + 50) {
+                // Swipe right - go prev
+                navigateSlider(-slidesToShow);
+            }
+        });
+        
+        // Function to navigate the slider
+        function navigateSlider(step) {
+            currentPosition += step;
+            
+            // Handle bounds
+            if (currentPosition > slides.length - slidesToShow) {
+                currentPosition = 0;
+            } else if (currentPosition < 0) {
+                currentPosition = Math.max(0, slides.length - slidesToShow);
+            }
+            
+            updateSliderPosition();
+        }
+        
+        // Update the slider position
+        function updateSliderPosition() {
+            const slideWidth = 100 / slidesToShow;
+            looksSlider.style.transform = `translateX(-${currentPosition * slideWidth}%)`;
+        }
+    }
     
     // Slideshow functionality for main banner
     let slideIndex = 0;
@@ -326,11 +325,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.innerWidth > 768) {
             if (collectionSubmenu && collectionSubmenu.classList.contains('active')) {
                 collectionSubmenu.classList.remove('active');
+                document.body.style.overflow = '';
             }
             if (nav && nav.classList.contains('active')) {
                 nav.classList.remove('active');
-                mobileOverlay.classList.remove('active');
-                body.classList.remove('menu-open');
             }
         }
     });
@@ -424,21 +422,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Here you would normally redirect to search results
                     alert('Searching for: ' + searchTerm);
                     // window.location.href = '/search?q=' + encodeURIComponent(searchTerm);
-                    searchBox.classList.remove('active');
                 }
             });
         }
 
         // Close search box when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!searchToggle.contains(e.target) && searchBox.classList.contains('active')) {
-                searchBox.classList.remove('active');
-            }
-        });
-        
-        // Add escape key support to close search
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && searchBox.classList.contains('active')) {
+        document.addEventListener('click', function() {
+            if (searchBox.classList.contains('active')) {
                 searchBox.classList.remove('active');
             }
         });
@@ -448,81 +438,82 @@ document.addEventListener('DOMContentLoaded', function() {
     const currencySelector = document.querySelector('.currency-selector');
     const currencyDropdown = document.querySelector('.currency-dropdown');
     const currencyOptions = document.querySelectorAll('.currency-option');
+    const currentCurrencyDisplay = document.querySelector('.current-currency span');
+    const currentCurrencyFlag = document.querySelector('.current-currency img');
     
-    // Initialize main currency selector
-    if (currencySelector && currencyDropdown && currencyOptions.length) {
-        initCurrencyEvents(currencySelector, currencyDropdown, currencyOptions);
+    // Currency storage in local storage
+    let currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
+    let currentSymbol = localStorage.getItem('selectedSymbol') || '$';
+    let currentRate = parseFloat(localStorage.getItem('selectedRate')) || 1;
+    
+    // Initialize the display with stored currency or default
+    if (currentCurrencyDisplay && currentCurrencyFlag) {
+        currentCurrencyDisplay.textContent = `${currentCurrency} (${currentSymbol})`;
+        
+        // Update flag based on currency
+        const flagCode = getCurrencyFlagCode(currentCurrency);
+        currentCurrencyFlag.src = `https://flagcdn.com/16x12/${flagCode}.png`;
+        
+        // Convert prices on page load
+        convertAllPrices();
     }
     
-    // Initialize currency after page load
-    initCurrencyDisplay();
-    convertAllPrices();
-
-    // Function to initialize currency events (reusable for cloned elements)
-    function initCurrencyEvents(selector, dropdown, options) {
-        if (!selector || !dropdown || !options.length) return;
-        
+    if (currencySelector && currencyDropdown) {
         // Toggle currency dropdown
-        selector.addEventListener('click', function(e) {
+        currencySelector.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            dropdown.classList.toggle('active');
+            currencyDropdown.classList.toggle('active');
         });
         
         // Prevent dropdown from closing when clicking inside it
-        dropdown.addEventListener('click', function(e) {
+        currencyDropdown.addEventListener('click', function(e) {
             e.stopPropagation();
         });
         
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            if (currencyDropdown.classList.contains('active')) {
+                currencyDropdown.classList.remove('active');
+            }
+        });
+        
         // Currency option selection
-        options.forEach(option => {
+        currencyOptions.forEach(option => {
             option.addEventListener('click', function() {
                 const newCurrency = this.getAttribute('data-currency');
                 const newSymbol = this.getAttribute('data-symbol');
                 const newRate = parseFloat(this.getAttribute('data-rate'));
                 
-                // Update current currency
-                localStorage.setItem('selectedCurrency', newCurrency);
-                localStorage.setItem('selectedSymbol', newSymbol);
-                localStorage.setItem('selectedRate', newRate);
-                
-                // Update display
-                initCurrencyDisplay();
-                
-                // Convert all prices
-                convertAllPrices();
+                if (newCurrency !== currentCurrency) {
+                    // Update current currency
+                    currentCurrency = newCurrency;
+                    currentSymbol = newSymbol;
+                    currentRate = newRate;
+                    
+                    // Save to local storage
+                    localStorage.setItem('selectedCurrency', currentCurrency);
+                    localStorage.setItem('selectedSymbol', currentSymbol);
+                    localStorage.setItem('selectedRate', currentRate);
+                    
+                    // Update display
+                    if (currentCurrencyDisplay) {
+                        currentCurrencyDisplay.textContent = `${currentCurrency} (${currentSymbol})`;
+                    }
+                    
+                    // Update flag
+                    if (currentCurrencyFlag) {
+                        const flagCode = getCurrencyFlagCode(currentCurrency);
+                        currentCurrencyFlag.src = `https://flagcdn.com/16x12/${flagCode}.png`;
+                    }
+                    
+                    // Convert all prices
+                    convertAllPrices();
+                }
                 
                 // Close dropdown
-                dropdown.classList.remove('active');
+                currencyDropdown.classList.remove('active');
             });
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function() {
-            dropdown.classList.remove('active');
-        });
-    }
-    
-    // Initialize currency display
-    function initCurrencyDisplay() {
-        const currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
-        const currentSymbol = localStorage.getItem('selectedSymbol') || '$';
-        
-        // Update all currency displays
-        const currencyDisplays = document.querySelectorAll('.current-currency span');
-        const currencyFlags = document.querySelectorAll('.current-currency img');
-        
-        currencyDisplays.forEach(display => {
-            if (display) {
-                display.textContent = `${currentCurrency} (${currentSymbol})`;
-            }
-        });
-        
-        currencyFlags.forEach(flag => {
-            if (flag) {
-                const flagCode = getCurrencyFlagCode(currentCurrency);
-                flag.src = `https://flagcdn.com/16x12/${flagCode}.png`;
-            }
         });
     }
     
@@ -540,10 +531,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to convert all prices on the page
     function convertAllPrices() {
-        const currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
-        const currentSymbol = localStorage.getItem('selectedSymbol') || '$';
-        const currentRate = parseFloat(localStorage.getItem('selectedRate')) || 1;
-        
         // Target both generic price elements and specific product prices
         const priceElements = document.querySelectorAll('.price, .product-price');
         
@@ -594,7 +581,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Format based on currency conventions
-                const formattedPrice = formatPrice(convertedPrice, currentSymbol, currentCurrency);
+                const formattedPrice = formatPrice(convertedPrice);
                 
                 // Update the price display
                 element.textContent = formattedPrice;
@@ -608,7 +595,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Helper function to format price based on currency
-    function formatPrice(price, symbol, currency) {
+    function formatPrice(price) {
         const numPrice = parseFloat(price);
         
         // Format with thousand separators
@@ -618,19 +605,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }).format(numPrice);
         
         // Position symbol based on currency
-        switch(currency) {
+        switch(currentCurrency) {
             case 'BDT':
-                return `${symbol} ${formattedNumber}`;
+                return `${currentSymbol} ${formattedNumber}`;
             case 'INR':
-                return `${symbol} ${formattedNumber}`;
+                return `${currentSymbol} ${formattedNumber}`;
             case 'AUD':
-                return `${symbol}${formattedNumber}`;
+                return `${currentSymbol}${formattedNumber}`;
             case 'USD':
-                return `${symbol}${formattedNumber}`;
+                return `${currentSymbol}${formattedNumber}`;
             case 'EUR':
-                return `${formattedNumber} ${symbol}`;
+                return `${formattedNumber} ${currentSymbol}`;
             default:
-                return `${symbol}${formattedNumber}`;
+                return `${currentSymbol}${formattedNumber}`;
         }
     }
 });
