@@ -59,7 +59,7 @@ nav ul li a.active {
     height: 21px;
     position: absolute;
     top: 1.5rem;
-    right: 1.5rem;
+    left: 1.5rem;
     cursor: pointer;
     z-index: 200;
 }
