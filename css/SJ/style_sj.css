@@ -581,7 +581,7 @@ footer {
     
     /* Adjust dot size and spacing for mobile */
     .slideshow-dots {
-        gap: 10px; /* Slightly reduced gap for mobile but still spacious */
+        gap: 12px; /* Slightly reduced gap for mobile but still spacious */
     }
     
     .dot {
