@@ -6,49 +6,87 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileOverlay = document.querySelector('.mobile-nav-overlay');
     const body = document.body;
     
-    // Create bottom widgets container for mobile
-    const mobileBottomWidgets = document.createElement('div');
-    mobileBottomWidgets.className = 'mobile-bottom-widgets';
+    // Create bottom widgets container for mobile menu
+    function setupMobileMenu() {
+        // Only setup if mobile bottom widgets don't already exist
+        if (!document.querySelector('.mobile-bottom-widgets')) {
+            const mobileBottomWidgets = document.createElement('div');
+            mobileBottomWidgets.className = 'mobile-bottom-widgets';
+            
+            // Create currency converter for mobile
+            const currencyConverter = document.querySelector('.currency-converter');
+            if (currencyConverter) {
+                const currencyClone = currencyConverter.cloneNode(true);
+                mobileBottomWidgets.appendChild(currencyClone);
+                
+                // Initialize currency events for the cloned element
+                const currencySelector = currencyClone.querySelector('.currency-selector');
+                const currencyDropdown = currencyClone.querySelector('.currency-dropdown');
+                const currencyOptions = currencyClone.querySelectorAll('.currency-option');
+                
+                initCurrencyEvents(currencySelector, currencyDropdown, currencyOptions);
+            }
+            
+            // Create social icons for mobile
+            const socialIcons = document.createElement('div');
+            socialIcons.className = 'social-icons';
+            
+            const socialLinks = [
+                { icon: 'facebook-f', url: '#' },
+                { icon: 'twitter', url: '#' },
+                { icon: 'instagram', url: '#' }
+            ];
+            
+            socialLinks.forEach(social => {
+                const link = document.createElement('a');
+                link.href = social.url;
+                link.className = 'social-icon';
+                
+                const icon = document.createElement('i');
+                icon.className = `fab fa-${social.icon}`;
+                
+                link.appendChild(icon);
+                socialIcons.appendChild(link);
+            });
+            
+            mobileBottomWidgets.appendChild(socialIcons);
+            
+            // Add to navigation
+            nav.appendChild(mobileBottomWidgets);
+        }
+    }
     
-    // Move currency converter and social icons to bottom widgets
-    const currencyConverter = document.querySelector('.currency-converter');
-    const socialIcons = document.querySelector('.social-icons.mobile-only');
-    
+    // Toggle mobile menu
     if (menuToggle) {
-        menuToggle.addEventListener('click', function() {
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event bubbling
+            setupMobileMenu();
             nav.classList.add('active');
             mobileOverlay.classList.add('active');
             body.classList.add('menu-open');
             
-            // Only append widgets to nav if they're not already there
-            if (!document.querySelector('.mobile-bottom-widgets')) {
-                if (currencyConverter) {
-                    const currencyClone = currencyConverter.cloneNode(true);
-                    mobileBottomWidgets.appendChild(currencyClone);
-                }
-                
-                if (socialIcons) {
-                    const socialClone = socialIcons.cloneNode(true);
-                    mobileBottomWidgets.appendChild(socialClone);
-                }
-                
-                nav.appendChild(mobileBottomWidgets);
-                
-                // Re-initialize currency events for the cloned element
-                initCurrencyEvents(mobileBottomWidgets.querySelector('.currency-selector'), 
-                                   mobileBottomWidgets.querySelector('.currency-dropdown'),
-                                   mobileBottomWidgets.querySelectorAll('.currency-option'));
+            // Ensure X button is visible
+            if (mobileCloseBtn) {
+                mobileCloseBtn.style.opacity = '1';
+                mobileCloseBtn.style.visibility = 'visible';
             }
         });
     }
-    
+
     // Close mobile menu
-    function closeMobileMenu() {
+    function closeMobileMenu(e) {
+        if (e) e.stopPropagation(); // Prevent event bubbling
         nav.classList.remove('active');
         mobileOverlay.classList.remove('active');
         body.classList.remove('menu-open');
+        
+        // Hide X button
+        if (mobileCloseBtn) {
+            mobileCloseBtn.style.opacity = '0';
+            mobileCloseBtn.style.visibility = 'hidden';
+        }
     }
-    
+
     if (mobileCloseBtn) {
         mobileCloseBtn.addEventListener('click', closeMobileMenu);
     }
@@ -57,23 +95,27 @@ document.addEventListener('DOMContentLoaded', function() {
         mobileOverlay.addEventListener('click', closeMobileMenu);
     }
     
+    // Enable mobile menu link clicks by preventing default only for submenu links
+    document.querySelectorAll('nav ul li a').forEach(link => {
+        if (link.classList.contains('collection-link')) {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    const submenuParent = this.closest('.has-submenu');
+                    if (submenuParent) {
+                        submenuParent.classList.toggle('active');
+                    }
+                }
+            });
+        }
+    });
+    
     // Collection dropdown functionality
     const collectionLink = document.querySelector('.collection-link');
     const collectionSubmenu = document.querySelector('.has-submenu');
     const submenuOverlay = document.querySelector('.submenu-overlay');
     const closeBtn = document.querySelector('.close-btn');
     const backBtn = document.querySelector('.back-btn');
-    
-    // Collection link click handler - different for mobile and desktop
-    if (collectionLink) {
-        collectionLink.addEventListener('click', function(e) {
-            // Only prevent default and toggle submenu on mobile
-            if (window.innerWidth <= 768) {
-                e.preventDefault();
-                collectionSubmenu.classList.toggle('active');
-            }
-        });
-    }
     
     // Close and back buttons for mobile
     if (closeBtn) {
@@ -167,91 +209,6 @@ document.addEventListener('DOMContentLoaded', function() {
             slides.addEventListener('transitionend', handleTransitionEnd);
         }
     });
-    
-    // NEW: Looks Slider functionality
-    const looksSlider = document.querySelector('.looks-slider');
-    if (looksSlider) {
-        const prevButton = document.querySelector('.slider-prev');
-        const nextButton = document.querySelector('.slider-next');
-        const slides = document.querySelectorAll('.look-slide');
-        
-        // Skip if no slides
-        if (slides.length === 0) return;
-        
-        let currentPosition = 0;
-        let slidesToShow = getSlidesToShow();
-        
-        // Get number of slides to show based on screen width
-        function getSlidesToShow() {
-            if (window.innerWidth <= 480) return 1;
-            if (window.innerWidth <= 768) return 2;
-            if (window.innerWidth <= 1024) return 3;
-            return 4; // Default for desktop
-        }
-        
-        // Update on window resize
-        window.addEventListener('resize', () => {
-            slidesToShow = getSlidesToShow();
-            updateSliderPosition();
-        });
-        
-        // Initialize slider position
-        updateSliderPosition();
-        
-        // Click events for navigation buttons
-        if (prevButton) {
-            prevButton.addEventListener('click', () => {
-                navigateSlider(-slidesToShow);
-            });
-        }
-        
-        if (nextButton) {
-            nextButton.addEventListener('click', () => {
-                navigateSlider(slidesToShow);
-            });
-        }
-        
-        // Touch events for swiping
-        let touchStartX, touchEndX;
-        
-        looksSlider.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-        
-        looksSlider.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            
-            if (touchEndX < touchStartX - 50) {
-                // Swipe left - go next
-                navigateSlider(slidesToShow);
-            }
-            
-            if (touchEndX > touchStartX + 50) {
-                // Swipe right - go prev
-                navigateSlider(-slidesToShow);
-            }
-        });
-        
-        // Function to navigate the slider
-        function navigateSlider(step) {
-            currentPosition += step;
-            
-            // Handle bounds
-            if (currentPosition > slides.length - slidesToShow) {
-                currentPosition = 0;
-            } else if (currentPosition < 0) {
-                currentPosition = Math.max(0, slides.length - slidesToShow);
-            }
-            
-            updateSliderPosition();
-        }
-        
-        // Update the slider position
-        function updateSliderPosition() {
-            const slideWidth = 100 / slidesToShow;
-            looksSlider.style.transform = `translateX(-${currentPosition * slideWidth}%)`;
-        }
-    }
     
     // Slideshow functionality for main banner
     let slideIndex = 0;
@@ -492,7 +449,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const currencyDropdown = document.querySelector('.currency-dropdown');
     const currencyOptions = document.querySelectorAll('.currency-option');
     
-    initCurrencyEvents(currencySelector, currencyDropdown, currencyOptions);
+    // Initialize main currency selector
+    if (currencySelector && currencyDropdown && currencyOptions.length) {
+        initCurrencyEvents(currencySelector, currencyDropdown, currencyOptions);
+    }
     
     // Initialize currency after page load
     initCurrencyDisplay();
@@ -512,11 +472,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Prevent dropdown from closing when clicking inside it
         dropdown.addEventListener('click', function(e) {
             e.stopPropagation();
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function() {
-            dropdown.classList.remove('active');
         });
         
         // Currency option selection
@@ -540,6 +495,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Close dropdown
                 dropdown.classList.remove('active');
             });
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            dropdown.classList.remove('active');
         });
     }
     
