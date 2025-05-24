@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Global currency variables - moved to top level for consistency
+    let currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
+    let currentSymbol = localStorage.getItem('selectedSymbol') || '$';
+    let currentRate = parseFloat(localStorage.getItem('selectedRate')) || 1;
+
     // Mobile menu toggle
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const nav = document.querySelector('nav');
@@ -61,10 +66,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         textElement.textContent = this.textContent.trim();
                     }
                     
+                    // Update global currency variables for immediate use
+                    currentCurrency = currency;
+                    currentSymbol = symbol;
+                    currentRate = parseFloat(getRateForCurrency(currency));
+                    
                     // Update stored currency info for conversion
                     localStorage.setItem('selectedCurrency', currency);
                     localStorage.setItem('selectedSymbol', symbol);
-                    localStorage.setItem('selectedRate', getRateForCurrency(currency));
+                    localStorage.setItem('selectedRate', currentRate);
                     
                     // Convert all prices
                     convertAllPrices();
@@ -76,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Currency selector functionality - ADDED THIS SECTION
+    // Currency selector functionality
     const currencySelector = document.querySelector('.currency-selector');
     const currencyDropdown = document.querySelector('.currency-dropdown');
     const currencyOptions = document.querySelectorAll('.currency-option');
@@ -109,7 +119,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 option.addEventListener('click', function() {
                     const currency = this.getAttribute('data-currency');
                     const symbol = this.getAttribute('data-symbol');
-                    const rate = this.getAttribute('data-rate');
+                    const rate = parseFloat(this.getAttribute('data-rate'));
+                    
+                    // Update global currency variables for immediate use
+                    currentCurrency = currency;
+                    currentSymbol = symbol;
+                    currentRate = rate;
                     
                     // Update display in selector
                     if (currentCurrencyDisplay && currentCurrencyFlag) {
@@ -127,8 +142,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Also update ship-to display if it exists
                     initializeShipToDisplay();
                     
-                    // Convert all prices
-                    convertAllPrices();
+                    // Convert all prices with a small visual indication
+                    convertAllPrices(true);
                     
                     // Close dropdown
                     currencyDropdown.classList.remove('active');
@@ -140,12 +155,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper function to get exchange rate for a currency
     function getRateForCurrency(currency) {
         switch(currency) {
-            case 'BDT': return '110.5';
-            case 'INR': return '83.2';
-            case 'AUD': return '1.52';
-            case 'USD': return '1';
-            case 'EUR': return '0.92';
-            default: return '1';
+            case 'BDT': return 110.5;
+            case 'INR': return 83.2;
+            case 'AUD': return 1.52;
+            case 'USD': return 1;
+            case 'EUR': return 0.92;
+            default: return 1;
         }
     }
     
@@ -470,11 +485,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Currency storage in local storage
-    let currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
-    let currentSymbol = localStorage.getItem('selectedSymbol') || '$';
-    let currentRate = parseFloat(localStorage.getItem('selectedRate')) || 1;
-    
     // Initialize currency display on page load
     function initializeCurrencyDisplay() {
         if (currentCurrencyDisplay && currentCurrencyFlag) {
@@ -514,14 +524,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Function to convert all prices on the page
-    function convertAllPrices() {
+    // Function to convert all prices on the page with visual feedback
+    function convertAllPrices(withAnimation = false) {
         // Target both generic price elements and specific product prices
         const priceElements = document.querySelectorAll('.price, .product-price');
         
         priceElements.forEach(element => {
-            // Add converting class for animation
-            element.classList.add('converting');
+            // Add converting class for animation if requested
+            if (withAnimation) {
+                element.classList.add('converting');
+            }
             
             // Get original price if stored, otherwise extract from current text
             let originalPrice;
@@ -539,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     element.setAttribute('data-original-currency', 'BDT');
                     element.setAttribute('data-original-price', originalPrice);
                 } else {
-                    // Handle other formats
+                    // Handle other formats - extract numeric portion
                     const numericValue = priceText.replace(/[^0-9.]/g, '');
                     originalPrice = parseFloat(numericValue);
                     // Assume USD if not specified
@@ -556,7 +568,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Convert from original currency to selected currency
                 if (originalCurrency === 'BDT') {
-                    // Convert from BDT to USD first (assuming rate is for BDT to USD)
+                    // Convert from BDT to USD first
                     const inUSD = originalPrice / 110.5; // Using the BDT rate from your data
                     // Then convert USD to target currency
                     convertedPrice = (inUSD * currentRate).toFixed(2);
@@ -572,10 +584,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 element.textContent = formattedPrice;
             }
             
-            // Remove converting class after animation
-            setTimeout(() => {
-                element.classList.remove('converting');
-            }, 500);
+            // Remove converting class after animation if it was added
+            if (withAnimation) {
+                setTimeout(() => {
+                    element.classList.remove('converting');
+                }, 800);
+            }
         });
     }
     
