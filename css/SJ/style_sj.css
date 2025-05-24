@@ -37,6 +37,7 @@ header {
     width: auto;
 }
 
+/* Base Navigation Styles */
 nav {
     width: 100%;
 }
@@ -54,12 +55,22 @@ nav ul li a {
     color: black;
     font-size: 0.875rem;
     letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 nav ul li a.active {
     font-weight: bold;
 }
 
+.menu-plus {
+    display: none; /* Hidden by default, shown on mobile */
+    margin-left: 10px;
+    font-size: 1.2rem;
+}
+
+/* Mobile Menu Toggle Button */
 .mobile-menu-toggle {
     display: none;
     flex-direction: column;
@@ -67,7 +78,8 @@ nav ul li a.active {
     width: 30px;
     height: 21px;
     position: absolute;
-    top: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
     left: 1.5rem;
     cursor: pointer;
     z-index: 200;
@@ -78,6 +90,107 @@ nav ul li a.active {
     height: 3px;
     width: 100%;
     background-color: black;
+}
+
+/* Mobile Menu Header with Close Button and Ship To */
+.mobile-menu-header {
+    display: none;
+    width: 100%;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+
+.mobile-menu-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #000;
+}
+
+.ship-to-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ship-to-selector {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.ship-to-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 180px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 3px;
+    display: none;
+    z-index: 1000;
+    margin-top: 5px;
+}
+
+.ship-to-dropdown.active {
+    display: block;
+}
+
+.ship-to-option {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.3s;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.ship-to-option:hover {
+    background: #f5f5f5;
+}
+
+/* Social Icons in Menu (Mobile) */
+.social-icons-menu {
+    display: none;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    margin-top: auto; /* Push to bottom of flex container */
+}
+
+.social-icons-menu .social-icon {
+    color: #000;
+    font-size: 20px;
+}
+
+/* Social Icons (Desktop) */
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-icon {
+    color: #000;
+    font-size: 18px;
+}
+
+.desktop-only {
+    display: flex;
 }
 
 /* Search Icon Styles - Improved */
@@ -198,19 +311,6 @@ nav ul li a.active {
     width: 16px;
     height: 12px;
     object-fit: cover;
-}
-
-/* Social Media Icons */
-.social-icons {
-    display: none; /* Hidden by default, shown on mobile */
-    align-items: center;
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.social-icon {
-    color: #000;
-    font-size: 18px;
 }
 
 /* Slideshow Styles */
@@ -578,6 +678,10 @@ footer {
     .has-submenu:hover .submenu {
         display: block;
     }
+    
+    .social-icons-menu {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -587,7 +691,8 @@ footer {
     
     header {
         padding: 1rem;
-        justify-content: center;
+        justify-content: space-between;
+        align-items: center;
     }
     
     .logo {
@@ -603,41 +708,68 @@ footer {
     }
     
     .currency-converter {
-        position: static;
-        margin-top: 15px;
-        order: 3;
+        display: none; /* Hide on mobile as it's now in the menu */
     }
     
-    .currency-dropdown {
-        width: 100%;
-        left: 0;
-        right: 0;
+    .desktop-only {
+        display: none;
     }
     
-    .social-icons.mobile-only {
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        order: 4;
-    }
-    
+    /* Mobile Menu Styling */
     nav {
-        overflow: hidden;
-        max-height: 0;
-        transition: max-height 0.5s ease-out;
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        order: 2;
+        height: 100%;
+        background: white;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        padding-bottom: 60px; /* Space for social icons */
     }
     
     nav.active {
-        max-height: 500px; /* Increased to accommodate submenu */
-        overflow-y: auto;
+        transform: translateX(0);
+    }
+    
+    .mobile-menu-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .social-icons-menu {
+        display: flex;
+        margin-top: auto; /* Push to bottom */
     }
     
     nav ul {
         flex-direction: column;
-        gap: 0.9375rem;
-        padding: 1.25rem 0;
+        gap: 0;
+        padding: 0 20px;
+        align-items: flex-start;
+    }
+    
+    nav ul li {
+        width: 100%;
+        border-bottom: 1px solid #eee;
+    }
+    
+    nav ul li a {
+        padding: 15px 0;
+        font-size: 16px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .menu-plus {
+        display: inline-block;
     }
     
     .hero-text {
@@ -666,7 +798,7 @@ footer {
         padding-right: 1.25rem;
     }
     
-    /* Mobile menu adjustments */
+    /* Mobile menu submenu adjustments */
     .has-submenu {
         position: relative;
     }

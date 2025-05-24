@@ -2,11 +2,90 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const nav = document.querySelector('nav');
+    const menuClose = document.querySelector('.mobile-menu-close');
     
     if (menuToggle) {
         menuToggle.addEventListener('click', function() {
-            nav.classList.toggle('active');
+            nav.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
         });
+    }
+    
+    if (menuClose) {
+        menuClose.addEventListener('click', function() {
+            nav.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        });
+    }
+    
+    // Ship to dropdown functionality
+    const shipToSelector = document.querySelector('.ship-to-selector');
+    const shipToDropdown = document.querySelector('.ship-to-dropdown');
+    const shipToOptions = document.querySelectorAll('.ship-to-option');
+    
+    if (shipToSelector && shipToDropdown) {
+        // Toggle ship to dropdown
+        shipToSelector.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            shipToDropdown.classList.toggle('active');
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        shipToDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            if (shipToDropdown.classList.contains('active')) {
+                shipToDropdown.classList.remove('active');
+            }
+        });
+        
+        // Country/currency selection
+        if (shipToOptions.length) {
+            shipToOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const country = this.getAttribute('data-country');
+                    const currency = this.getAttribute('data-currency');
+                    const symbol = this.getAttribute('data-symbol');
+                    
+                    // Update display in selector
+                    const imgElement = shipToSelector.querySelector('img');
+                    const textElement = shipToSelector.querySelector('span');
+                    
+                    if (imgElement && textElement) {
+                        imgElement.src = `https://flagcdn.com/16x12/${country}.png`;
+                        imgElement.alt = this.textContent.trim();
+                        textElement.textContent = this.textContent.trim();
+                    }
+                    
+                    // Update stored currency info for conversion
+                    localStorage.setItem('selectedCurrency', currency);
+                    localStorage.setItem('selectedSymbol', symbol);
+                    localStorage.setItem('selectedRate', getRateForCurrency(currency));
+                    
+                    // Convert all prices
+                    convertAllPrices();
+                    
+                    // Close dropdown
+                    shipToDropdown.classList.remove('active');
+                });
+            });
+        }
+    }
+    
+    // Helper function to get exchange rate for a currency
+    function getRateForCurrency(currency) {
+        switch(currency) {
+            case 'BDT': return '110.5';
+            case 'INR': return '83.2';
+            case 'AUD': return '1.52';
+            case 'USD': return '1';
+            case 'EUR': return '0.92';
+            default: return '1';
+        }
     }
     
     // Collection dropdown functionality
@@ -123,91 +202,6 @@ document.addEventListener('DOMContentLoaded', function() {
             slides.addEventListener('transitionend', handleTransitionEnd);
         }
     });
-    
-    // NEW: Looks Slider functionality
-    const looksSlider = document.querySelector('.looks-slider');
-    if (looksSlider) {
-        const prevButton = document.querySelector('.slider-prev');
-        const nextButton = document.querySelector('.slider-next');
-        const slides = document.querySelectorAll('.look-slide');
-        
-        // Skip if no slides
-        if (slides.length === 0) return;
-        
-        let currentPosition = 0;
-        let slidesToShow = getSlidesToShow();
-        
-        // Get number of slides to show based on screen width
-        function getSlidesToShow() {
-            if (window.innerWidth <= 480) return 1;
-            if (window.innerWidth <= 768) return 2;
-            if (window.innerWidth <= 1024) return 3;
-            return 4; // Default for desktop
-        }
-        
-        // Update on window resize
-        window.addEventListener('resize', () => {
-            slidesToShow = getSlidesToShow();
-            updateSliderPosition();
-        });
-        
-        // Initialize slider position
-        updateSliderPosition();
-        
-        // Click events for navigation buttons
-        if (prevButton) {
-            prevButton.addEventListener('click', () => {
-                navigateSlider(-slidesToShow);
-            });
-        }
-        
-        if (nextButton) {
-            nextButton.addEventListener('click', () => {
-                navigateSlider(slidesToShow);
-            });
-        }
-        
-        // Touch events for swiping
-        let touchStartX, touchEndX;
-        
-        looksSlider.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-        
-        looksSlider.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            
-            if (touchEndX < touchStartX - 50) {
-                // Swipe left - go next
-                navigateSlider(slidesToShow);
-            }
-            
-            if (touchEndX > touchStartX + 50) {
-                // Swipe right - go prev
-                navigateSlider(-slidesToShow);
-            }
-        });
-        
-        // Function to navigate the slider
-        function navigateSlider(step) {
-            currentPosition += step;
-            
-            // Handle bounds
-            if (currentPosition > slides.length - slidesToShow) {
-                currentPosition = 0;
-            } else if (currentPosition < 0) {
-                currentPosition = Math.max(0, slides.length - slidesToShow);
-            }
-            
-            updateSliderPosition();
-        }
-        
-        // Update the slider position
-        function updateSliderPosition() {
-            const slideWidth = 100 / slidesToShow;
-            looksSlider.style.transform = `translateX(-${currentPosition * slideWidth}%)`;
-        }
-    }
     
     // Slideshow functionality for main banner
     let slideIndex = 0;
@@ -333,63 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Coming Soon Page Functionality
-    // Check if countdown elements exist before trying to use them
-    const daysElement = document.getElementById("days");
-    const hoursElement = document.getElementById("hours");
-    const minutesElement = document.getElementById("minutes");
-    const secondsElement = document.getElementById("seconds");
-    const countdownContainer = document.querySelector(".countdown");
-    
-    if (daysElement && hoursElement && minutesElement && secondsElement) {
-        // Set the date we're counting down to (30 days from now)
-        const countDownDate = new Date();
-        countDownDate.setDate(countDownDate.getDate() + 30);
-        
-        // Update the countdown every 1 second
-        const countdown = setInterval(function() {
-            // Get today's date and time
-            const now = new Date().getTime();
-            
-            // Find the distance between now and the countdown date
-            const distance = countDownDate - now;
-            
-            // Time calculations
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
-            // Display the result with leading zeros
-            daysElement.textContent = days.toString().padStart(2, '0');
-            hoursElement.textContent = hours.toString().padStart(2, '0');
-            minutesElement.textContent = minutes.toString().padStart(2, '0');
-            secondsElement.textContent = seconds.toString().padStart(2, '0');
-            
-            // If the countdown is finished
-            if (distance < 0) {
-                clearInterval(countdown);
-                if (countdownContainer) {
-                    countdownContainer.innerHTML = "LAUNCHING TODAY!";
-                }
-            }
-        }, 1000);
-    }
-    
-    // Subscribe form handling
-    const subscribeForm = document.querySelector('.subscribe-form');
-    if (subscribeForm) {
-        subscribeForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const emailInput = this.querySelector('input[type="email"]');
-            if (emailInput && emailInput.value) {
-                alert('Thank you! You will be notified when we launch.');
-                this.reset();
-            }
-        });
-    }
-
-    // IMPROVED: Search icon functionality
+    // Search icon functionality
     const searchToggle = document.querySelector('.search-toggle');
     const searchBox = document.querySelector('.search-box');
     const searchForm = document.querySelector('.search-form');
@@ -434,91 +372,39 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // IMPROVED: Currency converter functionality
-    const currencySelector = document.querySelector('.currency-selector');
-    const currencyDropdown = document.querySelector('.currency-dropdown');
+    // Currency conversion functionality
     const currencyOptions = document.querySelectorAll('.currency-option');
-    const currentCurrencyDisplay = document.querySelector('.current-currency span');
-    const currentCurrencyFlag = document.querySelector('.current-currency img');
     
     // Currency storage in local storage
     let currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
     let currentSymbol = localStorage.getItem('selectedSymbol') || '$';
     let currentRate = parseFloat(localStorage.getItem('selectedRate')) || 1;
     
-    // Initialize the display with stored currency or default
-    if (currentCurrencyDisplay && currentCurrencyFlag) {
-        currentCurrencyDisplay.textContent = `${currentCurrency} (${currentSymbol})`;
+    // Initialize Ship To display with stored currency or default
+    function initializeShipToDisplay() {
+        const shipToSelector = document.querySelector('.ship-to-selector');
         
-        // Update flag based on currency
-        const flagCode = getCurrencyFlagCode(currentCurrency);
-        currentCurrencyFlag.src = `https://flagcdn.com/16x12/${flagCode}.png`;
-        
-        // Convert prices on page load
-        convertAllPrices();
-    }
-    
-    if (currencySelector && currencyDropdown) {
-        // Toggle currency dropdown
-        currencySelector.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            currencyDropdown.classList.toggle('active');
-        });
-        
-        // Prevent dropdown from closing when clicking inside it
-        currencyDropdown.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function() {
-            if (currencyDropdown.classList.contains('active')) {
-                currencyDropdown.classList.remove('active');
+        if (shipToSelector) {
+            const imgElement = shipToSelector.querySelector('img');
+            const textElement = shipToSelector.querySelector('span');
+            
+            if (imgElement && textElement) {
+                const countryCode = getCurrencyCountryCode(currentCurrency);
+                const countryName = getCountryName(countryCode);
+                
+                imgElement.src = `https://flagcdn.com/16x12/${countryCode}.png`;
+                imgElement.alt = countryName;
+                textElement.textContent = `${countryName} ${currentSymbol}`;
             }
-        });
-        
-        // Currency option selection
-        currencyOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                const newCurrency = this.getAttribute('data-currency');
-                const newSymbol = this.getAttribute('data-symbol');
-                const newRate = parseFloat(this.getAttribute('data-rate'));
-                
-                if (newCurrency !== currentCurrency) {
-                    // Update current currency
-                    currentCurrency = newCurrency;
-                    currentSymbol = newSymbol;
-                    currentRate = newRate;
-                    
-                    // Save to local storage
-                    localStorage.setItem('selectedCurrency', currentCurrency);
-                    localStorage.setItem('selectedSymbol', currentSymbol);
-                    localStorage.setItem('selectedRate', currentRate);
-                    
-                    // Update display
-                    if (currentCurrencyDisplay) {
-                        currentCurrencyDisplay.textContent = `${currentCurrency} (${currentSymbol})`;
-                    }
-                    
-                    // Update flag
-                    if (currentCurrencyFlag) {
-                        const flagCode = getCurrencyFlagCode(currentCurrency);
-                        currentCurrencyFlag.src = `https://flagcdn.com/16x12/${flagCode}.png`;
-                    }
-                    
-                    // Convert all prices
-                    convertAllPrices();
-                }
-                
-                // Close dropdown
-                currencyDropdown.classList.remove('active');
-            });
-        });
+        }
     }
     
-    // Helper function to get flag code from currency
-    function getCurrencyFlagCode(currency) {
+    // Initialize on page load
+    initializeShipToDisplay();
+    convertAllPrices();
+    
+    // Helper function to get country code from currency
+    function getCurrencyCountryCode(currency) {
         switch(currency) {
             case 'BDT': return 'bd';
             case 'INR': return 'in';
@@ -526,6 +412,18 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'USD': return 'us';
             case 'EUR': return 'eu';
             default: return 'us';
+        }
+    }
+    
+    // Helper function to get country name from country code
+    function getCountryName(countryCode) {
+        switch(countryCode) {
+            case 'bd': return 'Bangladesh';
+            case 'in': return 'India';
+            case 'au': return 'Australia';
+            case 'us': return 'USA';
+            case 'eu': return 'Europe';
+            default: return 'USA';
         }
     }
     
@@ -620,4 +518,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 return `${currentSymbol}${formattedNumber}`;
         }
     }
+
+    // Close menu when clicking Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (nav && nav.classList.contains('active')) {
+                nav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            if (collectionSubmenu && collectionSubmenu.classList.contains('active')) {
+                collectionSubmenu.classList.remove('active');
+            }
+        }
+    });
 });

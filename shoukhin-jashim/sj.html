@@ -9,9 +9,16 @@
 </head>
 <body>
     <header>
+        <div class="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
         <div class="logo">
             <a href="sj.html"><img src="../resources/LOGO/ss logo.png" alt="Shoukhin Jashim Logo"></a>
         </div>
+        
         <!-- Search icon -->
         <div class="search-icon">
             <a href="#" class="search-toggle">
@@ -55,24 +62,42 @@
             </div>
         </div>
 
-        <!-- Social media icons (visible only on mobile) -->
-        <div class="social-icons mobile-only">
-            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-        </div>
-
-        <div class="mobile-menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
         <nav>
+            <!-- Mobile menu header with close button and ship to -->
+            <div class="mobile-menu-header">
+                <button class="mobile-menu-close">×</button>
+                <div class="ship-to-container">
+                    <span>Ship to:</span>
+                    <div class="ship-to-selector">
+                        <img src="https://flagcdn.com/16x12/in.png" alt="India">
+                        <span>India ₹</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="ship-to-dropdown">
+                        <div class="ship-to-option" data-country="bd" data-currency="BDT" data-symbol="৳">
+                            <img src="https://flagcdn.com/16x12/bd.png" alt="Bangladesh"> Bangladesh ৳
+                        </div>
+                        <div class="ship-to-option" data-country="in" data-currency="INR" data-symbol="₹">
+                            <img src="https://flagcdn.com/16x12/in.png" alt="India"> India ₹
+                        </div>
+                        <div class="ship-to-option" data-country="us" data-currency="USD" data-symbol="$">
+                            <img src="https://flagcdn.com/16x12/us.png" alt="USA"> USA $
+                        </div>
+                        <div class="ship-to-option" data-country="au" data-currency="AUD" data-symbol="A$">
+                            <img src="https://flagcdn.com/16x12/au.png" alt="Australia"> Australia A$
+                        </div>
+                        <div class="ship-to-option" data-country="eu" data-currency="EUR" data-symbol="€">
+                            <img src="https://flagcdn.com/16x12/eu.png" alt="European Union"> Europe €
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <ul class="main-menu">
                 <li><a href="coming-soon.html">NEW IN</a></li>
                 <li><a href="coming-soon.html">SHOP</a></li>
                 <li class="has-submenu">
-                    <a href="#" class="collection-link">COLLECTION</a>
+                    <a href="#" class="collection-link">COLLECTION <span class="menu-plus">+</span></a>
                     <div class="submenu-overlay"></div>
                     <div class="submenu collection-submenu">
                         <div class="submenu-header mobile-only">
@@ -93,7 +118,6 @@
                                                     <div class="collection-slide">
                                                         <a href="collection-ready-to-wear-autonoma/heriz.html"><img src="../resources/sj-collection/haute-couture.png"></a>
                                                     </div>
-                                                    <!-- More slides can be added here -->
                                                 </div>
                                             </div>
                                         </div>
@@ -111,13 +135,11 @@
                                                     <div class="collection-slide">
                                                         <a href="collection-ready-to-wear-autonoma/autonoma.html"><img src="../resources/sj-collection/ready-to-wear.png"></a>
                                                     </div>
-                                                    <!-- More slides can be added here -->
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
 
                                 <!-- Sustainable Collection -->
                                 <div class="collection-category">
@@ -130,7 +152,6 @@
                                                     <div class="collection-slide">
                                                         <a href="collection-ready-to-wear-autonoma/sustainable-collection.html"><img src="../resources/sj-collection/gloom.png"></a>
                                                     </div>
-                                                    <!-- More slides can be added here -->
                                                 </div>
                                             </div>
                                         </div>
@@ -142,7 +163,21 @@
                 </li>
                 <li><a href="about-us/about-us.html">SHOUKHIN JASHIM</a></li>
             </ul>
+            
+            <!-- Social media icons at the bottom of mobile menu -->
+            <div class="social-icons-menu">
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            </div>
         </nav>
+        
+        <!-- Social media icons (visible outside menu on desktop) -->
+        <!-- <div class="social-icons desktop-only">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        </div> -->
     </header>
 
     <section class="hero">

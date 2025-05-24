@@ -8,18 +8,95 @@
     <link rel="stylesheet" href="../../css/SJ/style_sj.css">
     <!-- Then import collection-specific styles -->
     <link rel="stylesheet" href="../../css/SJ/sustainable.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="sustainable-page">
     <header>
-        <div class="logo">
-            <a href="../sj.html"><img src="../../resources/LOGO/ss logo.png" alt="Shoukhin Jashim Logo"></a>
-        </div>
+
         <div class="mobile-menu-toggle">
             <span></span>
             <span></span>
             <span></span>
         </div>
+        <!-- Logo and search bar -->
+
+        <div class="logo">
+            <a href="../sj.html"><img src="../../resources/LOGO/ss logo.png" alt="Shoukhin Jashim Logo"></a>
+        </div>
+
+        <!-- Search icon -->
+        <div class="search-icon">
+            <a href="#" class="search-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </a>
+            <div class="search-box">
+                <form class="search-form">
+                    <input type="text" placeholder="Search...">
+                    <button type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Currency converter -->
+        <div class="currency-converter">
+            <div class="currency-selector">
+                <div class="current-currency">
+                    <img src="https://flagcdn.com/16x12/us.png" alt="USA">
+                    <span>USD ($)</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+            <div class="currency-dropdown">
+                <div class="currency-option" data-currency="BDT" data-symbol="৳" data-rate="110.5">
+                    <img src="https://flagcdn.com/16x12/bd.png" alt="Bangladesh"> BDT (৳)
+                </div>
+                <div class="currency-option" data-currency="INR" data-symbol="₹" data-rate="83.2">
+                    <img src="https://flagcdn.com/16x12/in.png" alt="India"> INR (₹)
+                </div>
+                <div class="currency-option" data-currency="AUD" data-symbol="A$" data-rate="1.52">
+                    <img src="https://flagcdn.com/16x12/au.png" alt="Australia"> AUD (A$)
+                </div>
+                <div class="currency-option" data-currency="USD" data-symbol="$" data-rate="1">
+                    <img src="https://flagcdn.com/16x12/us.png" alt="USA"> USD ($)
+                </div>
+                <div class="currency-option" data-currency="EUR" data-symbol="€" data-rate="0.92">
+                    <img src="https://flagcdn.com/16x12/eu.png" alt="European Union"> EUR (€)
+                </div>
+            </div>
+        </div>
+
         <nav>
+            <!-- Mobile menu header with close button and ship to -->
+            <div class="mobile-menu-header">
+                <button class="mobile-menu-close">×</button>
+                <div class="ship-to-container">
+                    <span>Ship to:</span>
+                    <div class="ship-to-selector">
+                        <img src="https://flagcdn.com/16x12/in.png" alt="India">
+                        <span>India ₹</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="ship-to-dropdown">
+                        <div class="ship-to-option" data-country="bd" data-currency="BDT" data-symbol="৳">
+                            <img src="https://flagcdn.com/16x12/bd.png" alt="Bangladesh"> Bangladesh ৳
+                        </div>
+                        <div class="ship-to-option" data-country="in" data-currency="INR" data-symbol="₹">
+                            <img src="https://flagcdn.com/16x12/in.png" alt="India"> India ₹
+                        </div>
+                        <div class="ship-to-option" data-country="us" data-currency="USD" data-symbol="$">
+                            <img src="https://flagcdn.com/16x12/us.png" alt="USA"> USA $
+                        </div>
+                        <div class="ship-to-option" data-country="au" data-currency="AUD" data-symbol="A$">
+                            <img src="https://flagcdn.com/16x12/au.png" alt="Australia"> Australia A$
+                        </div>
+                        <div class="ship-to-option" data-country="eu" data-currency="EUR" data-symbol="€">
+                            <img src="https://flagcdn.com/16x12/eu.png" alt="European Union"> Europe €
+                        </div>
+                    </div>
+                </div>
+            </div>
             <ul class="main-menu">
                 <li><a href="../coming-soon.html">NEW IN</a></li>
                 <li><a href="../coming-soon.html">SHOP</a></li>
@@ -94,6 +171,12 @@
                 </li>
                 <li><a href="../about-us/about-us.html">SHOUKHIN JASHIM</a></li>
             </ul>
+            <!-- Social media icons at the bottom of mobile menu -->
+            <div class="social-icons-menu">
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            </div>
         </nav>
     </header>
 
