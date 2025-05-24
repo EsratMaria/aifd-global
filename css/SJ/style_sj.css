@@ -163,17 +163,19 @@ nav ul li a.active {
 
 /* Social Icons in Menu (Mobile) */
 .social-icons-menu {
-    display: none;
-    justify-content: center;
+    display: flex; /* Ensure it's visible for testing */
+    justify-content: flex-start; /* Align icons to the left */
+    align-items: center; /* Vertically align with other navbar items */
     gap: 20px;
-    padding: 20px 0;
+    padding: 0 20px; /* Left/right padding to match navbar */
     border-top: 1px solid #eee;
-    margin-top: auto; /* Push to bottom of flex container */
+    margin-top: auto; /* Optional: keep at bottom of flex container */
+    height: 60px; /* Match height of other navbar/menu items */
 }
 
 .social-icons-menu .social-icon {
     color: #000;
-    font-size: 20px;
+    font-size: 25px;
 }
 
 /* Social Icons (Desktop) */
@@ -749,23 +751,22 @@ footer {
     }
     
     nav ul {
-        flex-direction: column;
-        gap: 0;
-        padding: 0 20px;
-        align-items: flex-start;
+        padding: 30px 20px 0 20px;
     }
     
     nav ul li {
         width: 100%;
-        border-bottom: 1px solid #eee;
+        border-bottom: none; /* Remove the border */
+        margin-bottom: 25px; /* Add space between items */
     }
     
     nav ul li a {
-        padding: 15px 0;
+        padding: 0; /* Remove padding */
         font-size: 16px;
         width: 100%;
         display: flex;
         justify-content: space-between;
+        letter-spacing: 0.5px; /* Slight letter spacing for clean look */
     }
     
     .menu-plus {
