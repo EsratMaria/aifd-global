@@ -76,6 +76,67 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Currency selector functionality - ADDED THIS SECTION
+    const currencySelector = document.querySelector('.currency-selector');
+    const currencyDropdown = document.querySelector('.currency-dropdown');
+    const currencyOptions = document.querySelectorAll('.currency-option');
+    const currentCurrencyDisplay = document.querySelector('.current-currency span');
+    const currentCurrencyFlag = document.querySelector('.current-currency img');
+    
+    if (currencySelector && currencyDropdown) {
+        // Toggle currency dropdown when clicking the selector
+        currencySelector.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            currencyDropdown.classList.toggle('active');
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        currencyDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            if (currencyDropdown.classList.contains('active')) {
+                currencyDropdown.classList.remove('active');
+            }
+        });
+        
+        // Currency option selection
+        if (currencyOptions.length) {
+            currencyOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const currency = this.getAttribute('data-currency');
+                    const symbol = this.getAttribute('data-symbol');
+                    const rate = this.getAttribute('data-rate');
+                    
+                    // Update display in selector
+                    if (currentCurrencyDisplay && currentCurrencyFlag) {
+                        currentCurrencyDisplay.textContent = `${currency} (${symbol})`;
+                        const countryCode = getCurrencyCountryCode(currency);
+                        currentCurrencyFlag.src = `https://flagcdn.com/16x12/${countryCode}.png`;
+                        currentCurrencyFlag.alt = getCountryName(countryCode);
+                    }
+                    
+                    // Update stored currency info for conversion
+                    localStorage.setItem('selectedCurrency', currency);
+                    localStorage.setItem('selectedSymbol', symbol);
+                    localStorage.setItem('selectedRate', rate);
+                    
+                    // Also update ship-to display if it exists
+                    initializeShipToDisplay();
+                    
+                    // Convert all prices
+                    convertAllPrices();
+                    
+                    // Close dropdown
+                    currencyDropdown.classList.remove('active');
+                });
+            });
+        }
+    }
+    
     // Helper function to get exchange rate for a currency
     function getRateForCurrency(currency) {
         switch(currency) {
@@ -330,27 +391,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Search icon functionality
     const searchToggle = document.querySelector('.search-toggle');
     const searchBox = document.querySelector('.search-box');
+    const searchClose = document.querySelector('.search-close');
     const searchForm = document.querySelector('.search-form');
     const searchInput = document.querySelector('.search-form input');
+    const searchTags = document.querySelectorAll('.search-tag');
 
     if (searchToggle && searchBox) {
         // Toggle search box when clicking the search icon
         searchToggle.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation(); // Stop event from bubbling
-            searchBox.classList.toggle('active');
+            searchBox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
             
             // Focus the input when opening
-            if (searchBox.classList.contains('active') && searchInput) {
+            if (searchInput) {
                 setTimeout(() => searchInput.focus(), 100);
             }
         });
         
-        // Prevent search box from closing when clicking inside it
-        searchBox.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-
+        // Close search when clicking the close button
+        if (searchClose) {
+            searchClose.addEventListener('click', function() {
+                searchBox.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
+            });
+        }
+        
         // Handle search form submission
         if (searchForm) {
             searchForm.addEventListener('submit', function(e) {
@@ -363,22 +430,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+        
+        // Handle search tag clicks
+        if (searchTags.length) {
+            searchTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const searchText = this.textContent.trim();
+                    searchInput.value = searchText;
+                    searchInput.focus();
+                });
+            });
+        }
 
-        // Close search box when clicking outside
-        document.addEventListener('click', function() {
-            if (searchBox.classList.contains('active')) {
+        // Close search box when pressing Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && searchBox.classList.contains('active')) {
                 searchBox.classList.remove('active');
+                document.body.style.overflow = '';
             }
         });
     }
-
-    // Currency conversion functionality
-    const currencyOptions = document.querySelectorAll('.currency-option');
-    
-    // Currency storage in local storage
-    let currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
-    let currentSymbol = localStorage.getItem('selectedSymbol') || '$';
-    let currentRate = parseFloat(localStorage.getItem('selectedRate')) || 1;
     
     // Initialize Ship To display with stored currency or default
     function initializeShipToDisplay() {
@@ -399,7 +470,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Initialize on page load
+    // Currency storage in local storage
+    let currentCurrency = localStorage.getItem('selectedCurrency') || 'USD';
+    let currentSymbol = localStorage.getItem('selectedSymbol') || '$';
+    let currentRate = parseFloat(localStorage.getItem('selectedRate')) || 1;
+    
+    // Initialize currency display on page load
+    function initializeCurrencyDisplay() {
+        if (currentCurrencyDisplay && currentCurrencyFlag) {
+            currentCurrencyDisplay.textContent = `${currentCurrency} (${currentSymbol})`;
+            const countryCode = getCurrencyCountryCode(currentCurrency);
+            currentCurrencyFlag.src = `https://flagcdn.com/16x12/${countryCode}.png`;
+            currentCurrencyFlag.alt = getCountryName(countryCode);
+        }
+    }
+    
+    // Initialize displays and convert prices
+    initializeCurrencyDisplay();
     initializeShipToDisplay();
     convertAllPrices();
     
