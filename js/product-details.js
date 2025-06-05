@@ -46,59 +46,192 @@ function toggleUnit(unit) {
     });
 }
 
-// Fixed Image gallery functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const thumbnails = document.querySelectorAll('.thumbnail');
-    const mainImage = document.getElementById('mainProductImage');
+// Mobile swipe functionality
+let touchStartX = 0;
+let touchEndX = 0;
+let currentSlide = 0;
+let isTransitioning = false;
+
+function initMobileSlider() {
+    const mainImage = document.querySelector('.main-image');
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile && mainImage) {
+        // Create mobile slider structure if not exists
+        if (!mainImage.querySelector('.mobile-image-slider')) {
+            const images = [
+                '../../../resources/product-details/heriz/heriz-1.png',
+                '../../../resources/product-details/heriz/heriz-2.png'
+            ];
+            
+            // Create slider wrapper
+            const slider = document.createElement('div');
+            slider.className = 'mobile-image-slider';
+            
+            // Create slides
+            images.forEach((src, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'mobile-image-slide';
+                slide.innerHTML = `<img src="${src}" alt="Product Image ${index + 1}">`;
+                slider.appendChild(slide);
+            });
+            
+            // Replace current image with slider
+            const currentImg = mainImage.querySelector('img');
+            if (currentImg) {
+                currentImg.remove();
+            }
+            mainImage.appendChild(slider);
+            
+            // Add swipe indicator
+            const swipeIndicator = document.createElement('div');
+            swipeIndicator.className = 'swipe-indicator';
+            swipeIndicator.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+                <span>Swipe for more</span>
+            `;
+            mainImage.appendChild(swipeIndicator);
+        }
+        
+        // Add touch event listeners
+        mainImage.addEventListener('touchstart', handleTouchStart, { passive: true });
+        mainImage.addEventListener('touchmove', handleTouchMove, { passive: true });
+        mainImage.addEventListener('touchend', handleTouchEnd);
+    }
+}
+
+function handleTouchStart(e) {
+    touchStartX = e.touches[0].clientX;
+}
+
+function handleTouchMove(e) {
+    touchEndX = e.touches[0].clientX;
+}
+
+function handleTouchEnd() {
+    if (isTransitioning) return;
+    
+    const threshold = 50; // Minimum swipe distance
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > threshold) {
+        if (diff > 0) {
+            // Swipe left - next image
+            nextSlide();
+        } else {
+            // Swipe right - previous image
+            previousSlide();
+        }
+    }
+}
+
+function nextSlide() {
+    const slider = document.querySelector('.mobile-image-slider');
+    const slides = document.querySelectorAll('.mobile-image-slide');
     const dots = document.querySelectorAll('.dot');
     
-    // Array of images
-    const images = [
-        '../../../resources/product-details/heriz/heriz-1.png',
-        '../../../resources/product-details/heriz/heriz-2.png'
-    ];
+    if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlider(slider, dots);
+    }
+}
 
-    // Thumbnail click handler
-    thumbnails.forEach((thumb, index) => {
-        thumb.addEventListener('click', () => {
-            // Update active thumbnail
-            thumbnails.forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-            
-            // Update main image
-            const newImageSrc = thumb.getAttribute('data-image');
-            if (newImageSrc) {
-                mainImage.src = newImageSrc;
-            }
-            
-            // Update dots
-            dots.forEach(d => d.classList.remove('active'));
-            if (dots[index]) {
-                dots[index].classList.add('active');
-            }
-        });
-    });
+function previousSlide() {
+    const slider = document.querySelector('.mobile-image-slider');
+    const dots = document.querySelectorAll('.dot');
+    
+    if (currentSlide > 0) {
+        currentSlide--;
+        updateSlider(slider, dots);
+    }
+}
 
-    // Dot click handler
+function updateSlider(slider, dots) {
+    if (!slider) return;
+    
+    isTransitioning = true;
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    // Update dots
     dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            // Update active dot
-            dots.forEach(d => d.classList.remove('active'));
-            dot.classList.add('active');
-            
-            // Update main image
-            if (images[index]) {
-                mainImage.src = images[index];
-            }
-            
-            // Update active thumbnail
-            thumbnails.forEach(t => t.classList.remove('active'));
-            if (thumbnails[index]) {
-                thumbnails[index].classList.add('active');
-            }
-        });
+        dot.classList.toggle('active', index === currentSlide);
     });
+    
+    // Reset transition flag
+    setTimeout(() => {
+        isTransitioning = false;
+    }, 300);
+}
 
+// Image gallery functionality for desktop
+document.addEventListener('DOMContentLoaded', function() {
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        initMobileSlider();
+    } else {
+        // Desktop functionality
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.getElementById('mainProductImage');
+        const dots = document.querySelectorAll('.dot');
+        
+        // Array of images
+        const images = [
+            '../../../resources/product-details/heriz/heriz-1.png',
+            '../../../resources/product-details/heriz/heriz-2.png'
+        ];
+
+        // Thumbnail click handler
+        thumbnails.forEach((thumb, index) => {
+            thumb.addEventListener('click', () => {
+                // Update active thumbnail
+                thumbnails.forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+                
+                // Update main image
+                const newImageSrc = thumb.getAttribute('data-image');
+                if (newImageSrc && mainImage) {
+                    mainImage.src = newImageSrc;
+                }
+                
+                // Update dots
+                dots.forEach(d => d.classList.remove('active'));
+                if (dots[index]) {
+                    dots[index].classList.add('active');
+                }
+            });
+        });
+
+        // Dot click handler for desktop
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                if (isMobile) {
+                    // Mobile dot functionality
+                    currentSlide = index;
+                    const slider = document.querySelector('.mobile-image-slider');
+                    updateSlider(slider, dots);
+                } else {
+                    // Desktop dot functionality
+                    dots.forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                    
+                    // Update main image
+                    if (images[index] && mainImage) {
+                        mainImage.src = images[index];
+                    }
+                    
+                    // Update active thumbnail
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    if (thumbnails[index]) {
+                        thumbnails[index].classList.add('active');
+                    }
+                }
+            });
+        });
+    }
+    
     // Size selection
     const sizeOptions = document.querySelectorAll('.size-option');
     sizeOptions.forEach(option => {
@@ -109,6 +242,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Handle window resize
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        const wasMobile = document.querySelector('.mobile-image-slider');
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile && !wasMobile) {
+            // Switched to mobile
+            location.reload(); // Simple reload to restructure
+        } else if (!isMobile && wasMobile) {
+            // Switched to desktop
+            location.reload(); // Simple reload to restructure
+        }
+    }, 250);
+});
+
 // Close modal when clicking outside
 window.onclick = function(event) {
     const modal = document.getElementById('sizeGuideModal');
@@ -116,3 +267,25 @@ window.onclick = function(event) {
         modal.style.display = 'none';
     }
 }
+
+// Prevent body scroll when swiping on mobile
+document.addEventListener('DOMContentLoaded', function() {
+    const mainImage = document.querySelector('.main-image');
+    if (mainImage && window.innerWidth <= 768) {
+        let startY = 0;
+        
+        mainImage.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+        
+        mainImage.addEventListener('touchmove', (e) => {
+            const currentY = e.touches[0].clientY;
+            const diff = startY - currentY;
+            
+            // If mostly horizontal swipe, prevent default
+            if (Math.abs(diff) < 10) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    }
+});
