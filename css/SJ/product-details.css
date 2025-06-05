@@ -84,8 +84,8 @@
 
 .main-image {
     position: relative;
-    width: 440px;
-    height: 660px;
+    width: 540px;
+    height: 760px;
 }
 
 .main-image img {
@@ -119,8 +119,8 @@
 /* Right Side - Product Details */
 .product-info {
     flex: 1;
-    max-width: 600px;
-    height: 660px; /* Match image height */
+    max-width: 700px;
+    height: 760px; /* Match image height */
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
@@ -164,11 +164,11 @@
 
 /* Product Options */
 .product-options {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .option-group {
-    margin-bottom: 25px;
+    margin-bottom: 5px;
 }
 
 .option-group label {
