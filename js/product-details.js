@@ -7,19 +7,32 @@ function toggleSection(header) {
 // Size guide modal
 function openSizeGuide(e) {
     e.preventDefault();
-    document.getElementById('sizeGuideModal').style.display = 'block';
+    const modal = document.getElementById('sizeGuideModal');
+    modal.style.display = 'block';
+    
+    // Prevent body scroll on mobile when modal is open
+    if (window.innerWidth <= 768) {
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeSizeGuide() {
-    document.getElementById('sizeGuideModal').style.display = 'none';
+    const modal = document.getElementById('sizeGuideModal');
+    modal.style.display = 'none';
+    
+    // Re-enable body scroll
+    document.body.style.overflow = '';
 }
 
-// Size guide unit conversion
+// Size guide unit conversion with complete data
 const sizeDataCm = {
+    'XXS': { bust: 76, waist: 61, hip: 86 },
     'XS': { bust: 81, waist: 66, hip: 91 },
     'S': { bust: 86, waist: 71, hip: 97 },
     'M': { bust: 91, waist: 76, hip: 102 },
-    'L': { bust: 97, waist: 81, hip: 107 }
+    'L': { bust: 97, waist: 81, hip: 107 },
+    'XL': { bust: 104, waist: 89, hip: 114 },
+    'XXL': { bust: 112, waist: 97, hip: 122 }
 };
 
 function toggleUnit(unit) {
@@ -240,6 +253,12 @@ document.addEventListener('DOMContentLoaded', function() {
             option.classList.add('selected');
         });
     });
+    
+    // Ensure size guide link works on mobile
+    const sizeGuideLink = document.querySelector('.size-guide-link');
+    if (sizeGuideLink) {
+        sizeGuideLink.addEventListener('click', openSizeGuide);
+    }
 });
 
 // Handle window resize
@@ -264,9 +283,19 @@ window.addEventListener('resize', () => {
 window.onclick = function(event) {
     const modal = document.getElementById('sizeGuideModal');
     if (event.target == modal) {
-        modal.style.display = 'none';
+        closeSizeGuide();
     }
 }
+
+// Handle escape key for modal
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const modal = document.getElementById('sizeGuideModal');
+        if (modal.style.display === 'block') {
+            closeSizeGuide();
+        }
+    }
+});
 
 // Prevent body scroll when swiping on mobile
 document.addEventListener('DOMContentLoaded', function() {
@@ -287,5 +316,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
             }
         }, { passive: false });
+    }
+});
+
+// Initialize unit toggle to show cm by default
+document.addEventListener('DOMContentLoaded', function() {
+    const cmButton = document.querySelector('.unit-toggle button[onclick*="cm"]');
+    if (cmButton) {
+        toggleUnit('cm');
     }
 });
