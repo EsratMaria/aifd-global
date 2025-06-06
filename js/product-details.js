@@ -59,6 +59,77 @@ function toggleUnit(unit) {
     });
 }
 
+// Truncate breadcrumb text for mobile
+function truncateBreadcrumbMobile() {
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        const breadcrumbText = document.querySelector('.breadcrumb-text');
+        if (!breadcrumbText) return;
+        
+        const spans = breadcrumbText.querySelectorAll('span:not(.breadcrumb-separator)');
+        const lastSpan = spans[spans.length - 1]; // Product name span
+        
+        if (lastSpan) {
+            const originalText = lastSpan.getAttribute('data-original') || lastSpan.textContent;
+            
+            // Store original text
+            if (!lastSpan.getAttribute('data-original')) {
+                lastSpan.setAttribute('data-original', originalText);
+            }
+            
+            // If text is longer than 20 characters, truncate it
+            if (originalText.length > 20) {
+                const words = originalText.split(' ');
+                
+                if (words.length >= 2) {
+                    // Keep first word and last word
+                    const firstWord = words[0];
+                    const lastWord = words[words.length - 1];
+                    lastSpan.textContent = `${firstWord} ... ${lastWord}`;
+                } else {
+                    // Single long word - keep first 8 and last 4 characters
+                    const truncated = originalText.substring(0, 8) + ' ... ' + originalText.substring(originalText.length - 4);
+                    lastSpan.textContent = truncated;
+                }
+            }
+        }
+    } else {
+        // Restore original text on desktop
+        const breadcrumbText = document.querySelector('.breadcrumb-text');
+        if (breadcrumbText) {
+            const lastSpan = breadcrumbText.querySelector('span[data-original]');
+            if (lastSpan) {
+                lastSpan.textContent = lastSpan.getAttribute('data-original');
+            }
+        }
+    }
+}
+
+// Get product images dynamically from HTML
+function getProductImages() {
+    const images = [];
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    
+    // Get images from thumbnails
+    thumbnails.forEach(thumb => {
+        const imageSrc = thumb.getAttribute('data-image');
+        if (imageSrc) {
+            images.push(imageSrc);
+        }
+    });
+    
+    // If no thumbnails, get from main image
+    if (images.length === 0) {
+        const mainImage = document.getElementById('mainProductImage');
+        if (mainImage && mainImage.src) {
+            images.push(mainImage.src);
+        }
+    }
+    
+    return images;
+}
+
 // Mobile swipe functionality
 let touchStartX = 0;
 let touchEndX = 0;
@@ -72,10 +143,8 @@ function initMobileSlider() {
     if (isMobile && mainImage) {
         // Create mobile slider structure if not exists
         if (!mainImage.querySelector('.mobile-image-slider')) {
-            const images = [
-                '../../../resources/product-details/heriz/heriz-1.png',
-                '../../../resources/product-details/heriz/heriz-2.png'
-            ];
+            // Get images dynamically
+            const images = getProductImages();
             
             // Create slider wrapper
             const slider = document.createElement('div');
@@ -182,6 +251,9 @@ function updateSlider(slider, dots) {
 document.addEventListener('DOMContentLoaded', function() {
     const isMobile = window.innerWidth <= 768;
     
+    // Truncate breadcrumb on load
+    truncateBreadcrumbMobile();
+    
     if (isMobile) {
         initMobileSlider();
     } else {
@@ -190,11 +262,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const mainImage = document.getElementById('mainProductImage');
         const dots = document.querySelectorAll('.dot');
         
-        // Array of images
-        const images = [
-            '../../../resources/product-details/heriz/heriz-1.png',
-            '../../../resources/product-details/heriz/heriz-2.png'
-        ];
+        // Get images dynamically
+        const images = getProductImages();
 
         // Thumbnail click handler
         thumbnails.forEach((thumb, index) => {
@@ -266,6 +335,9 @@ let resizeTimer;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
+        // Update breadcrumb truncation
+        truncateBreadcrumbMobile();
+        
         const wasMobile = document.querySelector('.mobile-image-slider');
         const isMobile = window.innerWidth <= 768;
         

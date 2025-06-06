@@ -913,6 +913,15 @@
 /* Touch and Swipe Indicators */
 @media (max-width: 768px) {
 
+    .breadcrumb-text span:last-child:not(.breadcrumb-separator) {
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        vertical-align: bottom;
+    }
+
     .size-guide-link {
         display: block !important; /* Show on mobile */
         font-size: 10px;
